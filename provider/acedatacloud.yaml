@@ -9,6 +9,10 @@ icon_small:
   en_US: icon.png
 icon_large:
   en_US: icon.png
+icon_small_dark:
+  en_US: icon.png
+icon_large_dark:
+  en_US: icon.png
 background: '#FFFFFF'
 help:
   title:

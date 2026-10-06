@@ -9,6 +9,7 @@ description:
   en_US: Use Ace Data Cloud chat models in Dify with streaming and optional tool calling and image input.
   zh_Hans: 在 Dify 中使用 Ace Data Cloud 聊天模型，支持流式输出及按模型配置的工具调用和图片输入。
 icon: icon.png
+icon_dark: icon.png
 resource:
   memory: 268435456
   permission:
