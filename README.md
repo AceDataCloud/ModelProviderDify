@@ -4,6 +4,8 @@ Use an Ace Data Cloud API key to access Chat Completions models from Dify Chatfl
 Workflow and Agent applications. This is one model provider with a fixed HTTPS
 endpoint, `https://api.acedata.cloud/v1/chat/completions`.
 
+[Simplified Chinese](readme/README_zh_Hans.md)
+
 ## Setup
 
 1. Register or sign in at [Ace Data Cloud](https://platform.acedata.cloud).
@@ -13,14 +15,17 @@ endpoint, `https://api.acedata.cloud/v1/chat/completions`.
 3. Install **Ace Data Cloud** from Dify Marketplace after publication, or install
    the `.difypkg` from **Plugins → Install plugin → Local package file** in a
    Dify instance that permits local plugins. Submission is not Marketplace approval.
-4. Go to **Settings → Model Providers → Ace Data Cloud → Add model**. Enter an
+4. Go to **Integrations → Model Provider → Ace Data Cloud → Add Model**
+   (older versions: **Settings → Model Providers**). Enter an
    exact Chat Completions model ID, for example `gpt-4.1-mini`, and your API key.
    The endpoint and Chat Completions mode are set by the plugin.
 5. Leave the conservative context/output limits or change them within the selected
    model's documented limits. Enable tool calling, streaming tool calls and image
    input only when that model supports them. They are disabled by default.
-6. Save, select the model in an LLM node or chat application, and run a short prompt.
-   For Agent nodes, enable tool calling on a supported model first.
+6. Save and select the model in an LLM node. Connect **Start → LLM → Output**,
+   pass a text input to the LLM, and map `LLM.text` into the Output node. Test with
+   `Reply only DIFY_OK`. Chatflows use an **Answer** node. For Agent nodes, enable
+   tool calling on a supported model first.
 
 The plugin needs outbound HTTPS to `api.acedata.cloud` and Python 3.12 with
 `dify-plugin==0.9.1`. It requires a Dify version supporting that SDK.
@@ -52,7 +57,9 @@ account. Check [live prices](https://platform.acedata.cloud/models) and billing 
 the console. Charges are in Credits; their USD value depends on the user's package.
 The plugin reports API token usage, but does not publish a fixed USD estimate.
 Dify may display zero estimated cost when pricing is absent; this does **not** mean
-that API calls are free. Ace Data Cloud's billing records are authoritative.
+that API calls are free. In [Usage](https://platform.acedata.cloud/console/usages),
+filter by the test key and time window to match the request and deduction.
+Ace Data Cloud's billing records are authoritative.
 
 For authentication or access errors, check the API key scope, selected model,
 service activation and available balance. HTTP 429 is a rate limit; try later.
