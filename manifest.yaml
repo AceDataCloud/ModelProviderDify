@@ -1,0 +1,35 @@
+version: 0.0.1
+type: plugin
+author: acedatacloud
+name: acedatacloud
+label:
+  en_US: Ace Data Cloud
+  zh_Hans: Ace Data Cloud
+description:
+  en_US: Use Ace Data Cloud chat models in Dify with streaming and optional tool calling and image input.
+  zh_Hans: 在 Dify 中使用 Ace Data Cloud 聊天模型，支持流式输出及按模型配置的工具调用和图片输入。
+icon: icon.png
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+plugins:
+  models:
+    - provider/acedatacloud.yaml
+meta:
+  minimum_dify_version: 1.17.1
+  version: 0.0.1
+  arch: [amd64, arm64]
+  runner:
+    language: python
+    version: '3.12'
+    entrypoint: main
+created_at: 2026-10-06T14:00:00+08:00
+privacy: PRIVACY.md
+repo: https://github.com/AceDataCloud/dify-model-provider
+contact: dev@acedata.cloud
+network:
+  domains:
+    - api.acedata.cloud
