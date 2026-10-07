@@ -29,7 +29,7 @@ meta:
     entrypoint: main
 created_at: 2026-10-06T14:00:00+08:00
 privacy: PRIVACY.md
-repo: https://github.com/AceDataCloud/dify-model-provider
+repo: https://github.com/AceDataCloud/ModelProviderDify
 contact: dev@acedata.cloud
 network:
   domains:

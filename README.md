@@ -68,9 +68,9 @@ raw API bodies and credentials. Check the service console for request diagnostic
 
 ## Development and support
 
-- Source repository: https://github.com/AceDataCloud/dify-model-provider
+- Source repository: https://github.com/AceDataCloud/ModelProviderDify
 - Contact: dev@acedata.cloud
-- Issues: https://github.com/AceDataCloud/dify-model-provider/issues
+- Issues: https://github.com/AceDataCloud/ModelProviderDify/issues
 - Privacy: [PRIVACY.md](PRIVACY.md)
 - License: MIT
 
