@@ -31,6 +31,6 @@
 API Key、提示词、启用的图片输入、工具定义和工具结果通过 HTTPS 发送到 Ace Data Cloud。Key 只存放在 Dify 凭据设置中，不写入提示词或导出文件。
 插件不下载任意用户 URL、不执行生成的工具，也不额外持久化或记录这些内容；工具执行由 Dify 管理。详见 [PRIVACY.md](../PRIVACY.md)。
 
-源码：https://github.com/AceDataCloud/dify-model-provider  
-支持：https://github.com/AceDataCloud/dify-model-provider/issues  
+源码：https://github.com/AceDataCloud/ModelProviderDify
+支持：https://github.com/AceDataCloud/ModelProviderDify/issues
 联系：dev@acedata.cloud
