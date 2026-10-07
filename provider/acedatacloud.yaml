@@ -1,0 +1,109 @@
+provider: acedatacloud
+label:
+  en_US: Ace Data Cloud
+  zh_Hans: Ace Data Cloud
+description:
+  en_US: Chat models through the Ace Data Cloud API.
+  zh_Hans: 通过 Ace Data Cloud API 使用聊天模型。
+icon_small:
+  en_US: icon.png
+icon_large:
+  en_US: icon.png
+icon_small_dark:
+  en_US: icon.png
+icon_large_dark:
+  en_US: icon.png
+background: '#FFFFFF'
+help:
+  title:
+    en_US: Get an API key and check model availability
+    zh_Hans: 获取 API Key 并查看可用模型
+  url:
+    en_US: https://platform.acedata.cloud
+supported_model_types: [llm]
+configurate_methods: [customizable-model]
+model_credential_schema:
+  model:
+    label:
+      en_US: Model ID
+      zh_Hans: 模型 ID
+    placeholder:
+      en_US: e.g. gpt-4.1-mini
+      zh_Hans: 例如 gpt-4.1-mini
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API key
+        zh_Hans: API Key
+      type: secret-input
+      required: true
+    - variable: context_size
+      label:
+        en_US: Context token limit
+        zh_Hans: 上下文 Token 限制
+      type: text-input
+      default: '4096'
+      required: true
+      help:
+        en_US: Set a limit within the selected model's documented context window.
+        zh_Hans: 请设置为所选模型文档支持的上下文窗口以内。
+    - variable: max_tokens_to_sample
+      label:
+        en_US: Maximum output tokens
+        zh_Hans: 最大输出 Token 数
+      type: text-input
+      default: '1024'
+      required: true
+    - variable: function_calling_type
+      label:
+        en_US: Tool calling
+        zh_Hans: 工具调用
+      type: select
+      default: no_call
+      required: true
+      options:
+        - value: no_call
+          label:
+            en_US: Disabled
+            zh_Hans: 禁用
+        - value: tool_call
+          label:
+            en_US: Enabled (supported models only)
+            zh_Hans: 启用（仅限支持的模型）
+    - variable: stream_function_calling
+      label:
+        en_US: Streaming tool calls
+        zh_Hans: 流式工具调用
+      type: select
+      default: not_supported
+      required: true
+      options:
+        - value: not_supported
+          label:
+            en_US: Disabled
+            zh_Hans: 禁用
+        - value: supported
+          label:
+            en_US: Enabled (supported models only)
+            zh_Hans: 启用（仅限支持的模型）
+    - variable: vision_support
+      label:
+        en_US: Image input
+        zh_Hans: 图片输入
+      type: select
+      default: no_support
+      required: true
+      options:
+        - value: no_support
+          label:
+            en_US: Disabled
+            zh_Hans: 禁用
+        - value: support
+          label:
+            en_US: Enabled (supported models only)
+            zh_Hans: 启用（仅限支持的模型）
+extra:
+  python:
+    provider_source: provider/acedatacloud.py
+    model_sources:
+      - models/llm/llm.py
