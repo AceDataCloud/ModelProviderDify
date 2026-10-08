@@ -1,0 +1,140 @@
+app:
+  description: Three synthetic amounts → official Ace Data Cloud gpt-4.1-mini → structured
+    total. Fresh Marketplace reinstall verification.
+  icon: null
+  icon_background: null
+  icon_type: emoji
+  mode: workflow
+  name: Dify Marketplace POC 20261009 - Expense Summary
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: acedatacloud/acedatacloud:0.0.1@e137f4d0dcf94af9a3254fd315f8e5c53d9c87fccdb46423419d9144c98dfe5d
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    sensitive_word_avoidance:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: llm
+      id: start-llm
+      source: start
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: llm
+        targetType: end
+      id: llm-end
+      source: llm
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        desc: ''
+        title: Three expense amounts
+        type: start
+        variables:
+        - label: Expenses JSON
+          max_length: 2000
+          options: []
+          required: true
+          type: paragraph
+          variable: expenses
+      height: 98
+      id: start
+      position:
+        x: 0
+        y: 100
+      positionAbsolute:
+        x: 0
+        y: 100
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 400
+            temperature: 0
+          mode: chat
+          name: gpt-4.1-mini
+          provider: acedatacloud/acedatacloud/acedatacloud
+        prompt_template:
+        - role: system
+          text: You are an expense summarizer. Return only a valid JSON object with
+            keys currency (string), items (array preserving each input name and numeric
+            amount), count (integer), and total (number, sum of the amounts to two
+            decimal places). No markdown or extra text. Do not add or omit any item.
+        - role: user
+          text: 'Summarize these three test expense amounts:
+
+            {{#start.expenses#}}'
+        retry_config:
+          max_retries: 0
+          retry_enabled: false
+          retry_interval: 1000
+        title: Summarize expenses
+        type: llm
+        vision:
+          enabled: false
+      height: 98
+      id: llm
+      position:
+        x: 300
+        y: 100
+      positionAbsolute:
+        x: 300
+        y: 100
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - llm
+          - text
+          variable: summary_json
+        title: Structured expense summary
+        type: end
+      height: 98
+      id: end
+      position:
+        x: 600
+        y: 100
+      positionAbsolute:
+        x: 600
+        y: 100
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []
