@@ -1,0 +1,31 @@
+{
+  "repo": "ModelProviderDify",
+  "marketplace_url": "https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud",
+  "identifier": "acedatacloud/acedatacloud:0.0.1@e137f4d0dcf94af9a3254fd315f8e5c53d9c87fccdb46423419d9144c98dfe5d",
+  "installation_source": "marketplace",
+  "workflow_id": "1c78d506-f2bd-4993-9636-4421b819dd3d",
+  "workflow_status": "succeeded",
+  "service_status": "succeeded",
+  "case": "Model Provider Marketplace Verified",
+  "media_urls": [],
+  "outputs": {
+    "answer": "DIFY_MARKETPLACE_20261008_OK"
+  },
+  "icon_matches_source": true,
+  "billing": {
+    "id": "ef24c42b-bda5-4d55-bceb-798f1f87949e",
+    "trace_id": "2814a392-78a1-4c90-865a-bdfc63a96624",
+    "status_code": 200,
+    "deducted_amount": 5.60098926e-05,
+    "created_at": "2026-10-08T01:24:35.097744Z",
+    "api_id": "6b2b437b-b6d5-466c-8750-b16650072593"
+  },
+  "tested_at": "2026-10-08T01:26:57.567309+00:00",
+  "environment": "Dify CE 1.17.1 / plugin daemon 0.6.10-local",
+  "signature_verification_enabled": true,
+  "remote_debug_used": false,
+  "marketplace_install_tested": true,
+  "cloud_tested": false,
+  "screenshot": "evidence/marketplace-20261008.png",
+  "workflow": "evidence/marketplace-20261008-workflow.json"
+}

@@ -1,0 +1,147 @@
+{
+  "nodes": [
+    {
+      "id": "start",
+      "type": "custom",
+      "data": {
+        "title": "start",
+        "type": "start",
+        "desc": "",
+        "variables": [],
+        "selected": false
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "positionAbsolute": {
+        "x": 0,
+        "y": 100
+      },
+      "width": 242,
+      "height": 73,
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "zIndex": 0
+    },
+    {
+      "id": "llm",
+      "type": "custom",
+      "data": {
+        "title": "llm",
+        "type": "llm",
+        "desc": "",
+        "model": {
+          "provider": "acedatacloud/acedatacloud/acedatacloud",
+          "name": "gpt-4.1-mini",
+          "mode": "chat",
+          "completion_params": {
+            "temperature": 0,
+            "max_tokens": 32
+          }
+        },
+        "prompt_template": [
+          {
+            "role": "user",
+            "text": "Reply exactly DIFY_MARKETPLACE_20261008_OK"
+          }
+        ],
+        "context": {
+          "enabled": false,
+          "variable_selector": []
+        },
+        "vision": {
+          "enabled": false
+        },
+        "retry_config": {
+          "retry_enabled": false,
+          "max_retries": 0,
+          "retry_interval": 1000
+        },
+        "selected": false
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      },
+      "positionAbsolute": {
+        "x": 300,
+        "y": 100
+      },
+      "width": 242,
+      "height": 88,
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "zIndex": 0
+    },
+    {
+      "id": "end",
+      "type": "custom",
+      "data": {
+        "title": "end",
+        "type": "end",
+        "desc": "",
+        "outputs": [
+          {
+            "variable": "answer",
+            "value_selector": [
+              "llm",
+              "text"
+            ]
+          }
+        ],
+        "selected": false
+      },
+      "position": {
+        "x": 600,
+        "y": 100
+      },
+      "positionAbsolute": {
+        "x": 600,
+        "y": 100
+      },
+      "width": 242,
+      "height": 88,
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "zIndex": 0
+    }
+  ],
+  "edges": [
+    {
+      "id": "start-llm",
+      "source": "start",
+      "sourceHandle": "source",
+      "target": "llm",
+      "targetHandle": "target",
+      "type": "custom",
+      "data": {
+        "sourceType": "start",
+        "targetType": "llm",
+        "isInIteration": false,
+        "isInLoop": false
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "llm-end",
+      "source": "llm",
+      "sourceHandle": "source",
+      "target": "end",
+      "targetHandle": "target",
+      "type": "custom",
+      "data": {
+        "sourceType": "llm",
+        "targetType": "end",
+        "isInIteration": false,
+        "isInLoop": false
+      },
+      "zIndex": 0
+    }
+  ],
+  "viewport": {
+    "x": 0,
+    "y": 0,
+    "zoom": 1
+  }
+}
