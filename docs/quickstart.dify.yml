@@ -7,12 +7,7 @@ app:
   mode: workflow
   name: Dify Marketplace POC 20261009 - Expense Summary
   use_icon_as_answer_icon: false
-dependencies:
-- current_identifier: null
-  type: marketplace
-  value:
-    marketplace_plugin_unique_identifier: acedatacloud/acedatacloud:0.0.1@e137f4d0dcf94af9a3254fd315f8e5c53d9c87fccdb46423419d9144c98dfe5d
-    version: null
+dependencies: []
 kind: app
 version: 0.7.0
 workflow:
