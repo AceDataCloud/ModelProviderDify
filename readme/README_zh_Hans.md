@@ -1,40 +1,99 @@
-# Ace Data Cloud 模型供应商
+# Ace Data Cloud 模型供应商：手把手跑通第一个 Dify 工作流
 
-使用 Ace Data Cloud API Key，在 Dify 的 LLM 节点、Chatflow 和 Agent 中调用聊天模型。
-插件固定使用 `https://api.acedata.cloud/v1/chat/completions`。
+把聊天模型接入 Dify，将三项金额汇总为 JSON。本例使用 `gpt-4.1-mini`，已在真实 Dify CE 1.17.1 中运行。
 
-## 安装与配置
+[English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
-1. 登录 [Ace Data Cloud](https://platform.acedata.cloud/console/applications)，开通需要的聊天服务，检查余额与[当前模型价格](https://platform.acedata.cloud/models)。
-2. 在凭据中创建 API Key。服务 Key 仅适用于对应服务；全局 Key 可跨服务使用，但账户仍需有相应模型权限。
-3. 本插件目前已提交官方 Marketplace 审核，尚未确认上架。发布后在市场中安装 **Ace Data Cloud**。如需审核本候选包，可在允许本地插件的 Dify 环境中通过 **Plugins → Install plugin → Local package file** 安装 `.difypkg`；本地安装不代表官方收录。
-4. 打开 **Integrations → Model Provider → Ace Data Cloud → Add Model**；旧版入口为**设置 → 模型供应商**。填写准确的聊天模型 ID，例如 `gpt-4.1-mini`，以及 API Key。无需填写接口地址。
-5. 首次文本测试可使用上下文 `4096`、最大输出 `1024`。这些是保守测试设置，不代表模型最大容量。工具调用、流式工具调用和图片输入默认关闭，仅在所选模型支持时启用。
-6. 保存模型，在 LLM 节点中选择它。创建**开始 → LLM → 输出**工作流，将用户输入传入 LLM，再将 `LLM.text` 映射到输出。输入 `Reply only DIFY_OK`，确认成功返回。Chatflow 使用**回答**节点输出结果。
+## 1. 安装模型插件
 
-保存模型通过只读 `/v1/models` 验证 Key 和模型 ID，不生成付费回答；模型权限、余额和可选能力仍需通过真实调用确认。
-仅使用 Chat Completions 模型。不要添加生图、Embedding 或 Messages-only 模型，例如 `claude-opus-5-5`、`claude-sonnet-5-5`。
+打开上方市场入口，确认 **Ace Data Cloud**、作者 **acedatacloud**，点 **Install** 并选择工作区。回到 Dify 的 **Integrations（集成）→ Model Provider（模型供应商）**，应能看到 **Ace Data Cloud**。这是模型插件，不在 Tools 工具列表中。
 
-## 用量与排错
+## 2. 复制或创建 API Key
 
-插件免费安装，模型 API 使用 Ace Data Cloud 余额。到[用量页](https://platform.acedata.cloud/console/usages)按 Key 和时间筛选请求，核对状态及实际扣减。
-扣费单位为 Credits，USD 换算取决于当前套餐。Dify 的零预估费用不代表 API 免费；以平台用量记录为准。重试和 Agent 多轮调用可能增加请求数。
+1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications)，找到 **通用应用**。
+2. 点击图中 **①** 复制当前 Key。要单独给 Dify 创建 Key，则点 **②管理密钥 → 创建**。
 
-认证错误时检查 Key、服务权限和模型 ID；403 可能表示访问或内容限制；429 时降低并发并等待；超时或 5xx 时检查[服务状态](https://status.acedata.cloud)。
-工具未执行时，检查模型能力及 Agent 的工具配置；工作流成功却无回答时，检查输出节点映射。
+![复制Key与管理密钥入口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
 
-插件需要 Python 3.12、`dify-plugin==0.9.1`，并允许访问 `api.acedata.cloud:443`。连接超时 10 秒，生成读取超时 120 秒。
-已完成插件包、SDK 与真实 API 验证；完整 Community Edition/Cloud 界面安装仍待验证。
+3. 填名称，按需设置过期、用量和 API 限制，点 **创建**，再回列表或应用页复制。
 
-## 隐私与支持
+![创建独立的Dify Key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
 
-API Key、提示词、启用的图片输入、工具定义和工具结果通过 HTTPS 发送到 Ace Data Cloud。Key 只存放在 Dify 凭据设置中，不写入提示词或导出文件。
-插件不下载任意用户 URL、不执行生成的工具，也不额外持久化或记录这些内容；工具执行由 Dify 管理。详见 [PRIVACY.md](../PRIVACY.md)。
+通用应用 Key 可用于账号有权使用的多个服务；专用 Key 仅限对应服务。首次运行前确认 `gpt-4.1-mini` 权限和余额。启用 Allowed APIs 时，要允许统一模型列表 `/v1/models` 及聊天接口 `/v1/chat/completions`。Dify 只贴 Token 字符串，不加 `Bearer `、引号，也不要用平台管理 Token。
 
-源码：https://github.com/AceDataCloud/ModelProviderDify
-支持：https://github.com/AceDataCloud/ModelProviderDify/issues
-联系：dev@acedata.cloud
+## 3. 在 Dify 添加模型
 
-## 官方市场安装验收
+进入 **Integrations → Model Provider → Ace Data Cloud → Add Model**：
 
-2026-10-08 已从[官方市场](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)安装签名包，并完成记录中的真实 Dify 工作流。未使用 remote-debug。[验收数据](../tests/marketplace-acceptance.json)与[原始截图](../tests/evidence/marketplace-20261008.png)记录了准确范围；此前主流程和高级功能证据继续保留。
+| 字段 | 首跑填写 |
+|---|---|
+| Model ID（模型 ID） | `gpt-4.1-mini` |
+| Model Type（模型类型） | LLM |
+| Authorization Name（授权名称） | `Ace Data Cloud` |
+| API key | 自己复制的 API Token |
+| Context token limit（上下文限制） | `128000` |
+| Maximum output tokens（最大输出） | `1024` |
+| Tool calling（工具调用） | Disabled（禁用） |
+| Streaming tool calls（流式工具调用） | Disabled |
+| Image input（图片输入） | Disabled |
+
+点 **Add（添加）**。插件已经配置接口地址和 Chat Completions 模式，不用再填 Base URL。保存只查询模型列表，不生成付费内容。
+
+![真实添加模型窗口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
+
+## 4. 连接 Start → LLM → Output
+
+进入 **Studio → Create → Create from Blank → Workflow**，命名为 `Expense summary`。用 **+** 添加 LLM 和 Output 节点，将右侧连接点依次连为 **Start → LLM → Output**。
+
+Start 新增 Paragraph（多行文本）输入，变量名 `expenses`，标签 `Expenses JSON`，设为必填，最大长度至少 2000。LLM 节点选择 **Ace Data Cloud / gpt-4.1-mini**，Temperature 填 `0`，Maximum tokens 填 `400`，失败重试关闭。
+
+系统提示词填写：
+
+```text
+Return only a valid JSON object with keys currency, items, count and total.
+Preserve each input name and numeric amount. Count the items and sum their amounts to two decimal places.
+Do not add or omit any item. No markdown or extra text.
+```
+
+用户提示词填写 `Summarize these expenses:`，再从变量选择器插入 **Start → expenses**。不要把 API Key 放进提示词。
+
+![选择模型与输入变量](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/03-configure.png)
+
+Output 新增 `summary_json`，变量选择 **LLM → text**，类型为 String。
+
+![输出模型文本](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/05-output.png)
+
+## 5. 实际运行并核对结果
+
+点 **Test Run**，在 **Expenses JSON** 中粘贴：
+
+```json
+{"currency":"CNY","items":[{"name":"coffee","amount":12.5},{"name":"lunch","amount":28.75},{"name":"taxi","amount":8.75}]}
+```
+
+点 **Start Run**。三个节点完成后，`summary_json` 应是合法 JSON，保留三项输入，`count` 为 3，`total` 为 50.00。聊天模型直接返回完成后的文本，不需要媒体任务查询节点。
+
+```json
+{"currency":"CNY","items":[{"name":"coffee","amount":12.5},{"name":"lunch","amount":28.75},{"name":"taxi","amount":8.75}],"count":3,"total":50.00}
+```
+
+![真实成功的金额汇总结果](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/06-result.png)
+
+[下载可导入工作流](https://github.com/AceDataCloud/ModelProviderDify/raw/refs/heads/main/docs/quickstart.dify.yml)。在 Studio 导入后配置自己的 Key，文件不含凭据。
+
+## 常见问题与费用
+
+| 现象 | 检查方法 |
+|---|---|
+| 保存模型失败 | 核对精确模型 ID、生成 API Token、过期时间、服务权限、Allowed APIs。 |
+| LLM 下拉框没有模型 | 先在 Ace Data Cloud 下添加自定义模型，再回节点选择对应供应商和模型。 |
+| 401/403 | 检查 Key、权限、内容限制及余额；反馈时不要发送 Key。 |
+| 429 | 稍后再试并降低并发。 |
+| 超时/5xx | 重提前先看请求历史；插件不自动重试付费调用。 |
+| 出现 Markdown 或总额错误 | 保留 JSON 提示并核对结果；用于业务计算前需要独立校验模型答案。 |
+
+插件免费，API 按当前服务价格计费。Dify 因未配置固定价格可能显示估价为零，真实扣费以 Ace Data Cloud 用量页为准。请求发往 `api.acedata.cloud`，详见[隐私说明](https://github.com/AceDataCloud/ModelProviderDify/blob/main/PRIVACY.md)。
+
+本插件支持 Chat Completions；Responses-only 等其他协议、图片生成、向量及音视频接口不是此处的聊天模型。只有模型确实支持时，再开启图片或工具调用。
+
+[源码](https://github.com/AceDataCloud/ModelProviderDify) · [问题反馈](https://github.com/AceDataCloud/ModelProviderDify/issues) · dev@acedata.cloud
