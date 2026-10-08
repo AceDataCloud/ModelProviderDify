@@ -34,3 +34,7 @@ API Key、提示词、启用的图片输入、工具定义和工具结果通过 
 源码：https://github.com/AceDataCloud/ModelProviderDify
 支持：https://github.com/AceDataCloud/ModelProviderDify/issues
 联系：dev@acedata.cloud
+
+## 官方市场安装验收
+
+2026-10-08 已从[官方市场](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)安装签名包，并完成记录中的真实 Dify 工作流。未使用 remote-debug。[验收数据](../tests/marketplace-acceptance.json)与[原始截图](../tests/evidence/marketplace-20261008.png)记录了准确范围；此前主流程和高级功能证据继续保留。

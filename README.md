@@ -12,7 +12,7 @@ endpoint, `https://api.acedata.cloud/v1/chat/completions`.
 2. Open the desired chat service, activate access, and check its current price and
    balance. Create an API key in the console. A service key is limited to that
    service; use a global key for models from multiple services.
-3. Install **Ace Data Cloud** from Dify Marketplace after publication, or install
+3. Install **Ace Data Cloud** from [Dify Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud), or install
    the `.difypkg` from **Plugins → Install plugin → Local package file** in a
    Dify instance that permits local plugins. Submission is not Marketplace approval.
 4. Go to **Integrations → Model Provider → Ace Data Cloud → Add Model**
@@ -86,3 +86,7 @@ dify plugin package .
 `tests/live_smoke.py` is an opt-in, billable integration check. It reads
 `ACEDATACLOUD_API_TOKEN` from the environment, performs three small requests and
 prints only non-secret results. It is never run by unit tests.
+
+## Official Marketplace verification
+
+[Install from Dify Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud). Version 0.0.1 was downloaded and installed through the official Marketplace flow on October 8, 2026, with signature verification enabled and no remote-debug process. The installed plugin then completed the recorded real Dify workflow. [Verification data](tests/marketplace-acceptance.json) and [original Dify screenshot](tests/evidence/marketplace-20261008.png) document the exact scope. This proves optional Marketplace availability, not default installation or featured placement.
