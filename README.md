@@ -10,7 +10,9 @@ Open the Marketplace link above, check **Ace Data Cloud** by **acedatacloud**, c
 
 ## 2. Copy or create your API key
 
-1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications) and open **General application**.
+New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
+
+1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General application**.
 2. Click **1** in the screenshot to copy the selected API key. For a separate Dify key, use **2 → Manage Keys → Create**.
 
 ![Copy the selected key or open key management](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)

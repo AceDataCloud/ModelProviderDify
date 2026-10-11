@@ -10,7 +10,9 @@
 
 ## 2. 复制或创建 API Key
 
-1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications)，找到 **通用应用**。
+首次使用请先注册并登录；如果应用页还没有通用应用，点击 **初始化通用应用（Initialize General Application）**，再按下面步骤管理密钥。
+
+1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，找到 **通用应用**。
 2. 点击图中 **①** 复制当前 Key。要单独给 Dify 创建 Key，则点 **②管理密钥 → 创建**。
 
 ![复制Key与管理密钥入口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
