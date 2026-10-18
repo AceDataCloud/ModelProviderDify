@@ -2,7 +2,7 @@
 
 安装 **Ace Data Cloud 模型供应商**，保存一个 API Key，即可在 LLM 节点选择 **GPT-4.1 mini**。预设已提供接口地址和保守参数，不用手填 Base URL、模型 ID 或能力开关。下方三项金额汇总示例曾在真实 Dify CE 1.17.1 中运行。
 
-**0.0.4 发布状态：**供应商统一 Key 和预设模型已在源码中准备，仍需源码审核及 Marketplace 发布。当前公开 0.0.3 使用下方的自定义模型表单。文中的截图来自 2026 年 10 月 9 日真实 Dify CE 1.17.1，不展示新的供应商 Key 表单，也不能证明 0.0.4 已安装。
+**0.0.4 版本说明：**安装此版本后可使用供应商统一 Key 和预设模型。请核对 Dify 工作区中的版本及[市场入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)；旧安装或市场旧版本仍可能使用下方自定义模型表单。文中的截图来自 2026 年 10 月 9 日真实 Dify CE 1.17.1，不展示新的供应商 Key 表单，也不能证明 0.0.4 已安装。
 
 [English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -35,7 +35,7 @@
 
 ### 当前公开 0.0.3 及可选自定义模型
 
-0.0.4 待发布期间，或需要其他自定义模型时，使用下面已有路径；升级后仍然支持。
+已安装版本早于 0.0.4，或需要其他自定义模型时，使用下面已有路径；升级后仍然支持。
 
 进入 **Integrations → Model Provider → Ace Data Cloud → Add Model**：
 
