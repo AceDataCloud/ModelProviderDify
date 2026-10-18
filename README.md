@@ -1,6 +1,8 @@
 # Ace Data Cloud model provider: your first Dify workflow
 
-Connect a chat model to Dify and turn three expense amounts into a JSON summary. This example uses `gpt-4.1-mini` and has been run in Dify CE 1.17.1.
+Install **Ace Data Cloud** as a Dify model provider, save one API key, and select **GPT-4.1 mini** in an LLM node. The preset supplies the endpoint and conservative limits; you do not have to type a Base URL, model ID or capability settings. This example turns three expense amounts into JSON and previously ran in Dify CE 1.17.1.
+
+**Version 0.0.4 release status:** the provider-wide key and preset model are prepared in source and require source review and Marketplace publication. The currently published 0.0.3 uses the custom-model form documented below. The screenshots are real historical Dify CE 1.17.1 captures from October 9, 2026; they do not show the new provider-key form or prove 0.0.4 installation.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -25,6 +27,16 @@ A general-application key can access multiple services your account is entitled 
 
 ## 3. Add the model in Dify
 
+### Version 0.0.4: one provider key, then select the preset
+
+In **Integrations → Model Provider → Ace Data Cloud**, configure the provider credential and paste your **Ace Data Cloud API key**. Saving makes only a read-only `/v1/models` request; it does not generate a response. In an LLM node, choose **Ace Data Cloud → GPT-4.1 mini**. The preset uses a conservative 128,000-token context and a 1,024-token maximum output, with optional vision and tool calling disabled. Service access and balance still apply. If the model is unavailable for your account, choose an exact available model through the custom-model form; no substitute is chosen automatically.
+
+This is the standard Dify model-provider plugin mechanism used for named providers. Marketplace installation does not mean Dify Cloud or a new self-hosted workspace installs Ace by default. No production setting is changed by this release.
+
+### Published 0.0.3 and optional custom models
+
+Use this existing path for a custom model or while 0.0.4 is awaiting publication. It remains supported after upgrading.
+
 Open **Integrations → Model Provider → Ace Data Cloud → Add Model** and fill:
 
 | Field | First-run value |
@@ -41,7 +53,7 @@ Open **Integrations → Model Provider → Ace Data Cloud → Add Model** and fi
 
 Click **Add**. The API endpoint and Chat Completions mode are supplied by the plugin; you do not need to enter a Base URL. Saving checks the key and model ID without generating paid content.
 
-![Actual Add Model dialog](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
+![Historical custom-model dialog, Dify CE 1.17.1, October 9 2026](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
 
 ## 4. Create Start → LLM → Output
 
@@ -90,7 +102,7 @@ When the three nodes finish, `summary_json` should be valid JSON with the origin
 | Problem | Check |
 |---|---|
 | Model cannot be saved | Exact model ID, generation API token, expiration, service access and Allowed APIs. |
-| Model missing in the LLM selector | Add the custom model under Ace Data Cloud, then select that provider/model in the node. |
+| Model missing in the LLM selector | In 0.0.4, save the provider API key and check preset model access. In 0.0.3, add the custom model first. |
 | 401/403 | Key, permissions, content policy and balance; never send your key in a support message. |
 | 429 | Wait and reduce concurrency. |
 | Timeout/5xx | Check request history before resubmitting; the plugin does not retry paid calls automatically. |

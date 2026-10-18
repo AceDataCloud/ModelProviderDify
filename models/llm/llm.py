@@ -79,8 +79,21 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         schema.pricing = None
         return schema
 
-    def validate_credentials(self, model: str, credentials: dict) -> None:
-        credentials = self._credentials(credentials)
+    def get_model_schema(self, model: str, credentials: dict | None = None):
+        custom_fields = {
+            "context_size",
+            "max_tokens_to_sample",
+            "function_calling_type",
+            "stream_function_calling",
+            "vision_support",
+        }
+        if credentials and custom_fields.intersection(credentials):
+            return self.get_customizable_model_schema_from_credentials(model, credentials)
+        return super().get_model_schema(model, credentials)
+
+    @staticmethod
+    def available_model_ids(credentials: dict) -> set[str]:
+        credentials = AceDataCloudLLM._credentials(credentials)
         try:
             # Read-only auth/model check: saving credentials never generates paid output.
             with requests.get(
@@ -89,18 +102,23 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
                 timeout=(10, 30),
                 allow_redirects=False,
             ) as response:
-                self._check_response(response)
+                AceDataCloudLLM._check_response(response)
                 available = {item["id"] for item in response.json()["data"]}
-                if model not in available:
-                    raise CredentialsValidateFailedError(
-                        "Model ID not found. Use an exact ID from the Ace Data Cloud model catalog."
-                    )
+                if not available or not all(isinstance(item, str) for item in available):
+                    raise ValueError("The model catalog is empty or invalid.")
+                return available
         except CredentialsValidateFailedError:
             raise
         except (InvokeError, requests.RequestException, ValueError, KeyError, TypeError):
             raise CredentialsValidateFailedError(
                 "Unable to validate this model. Check the API key, model access and network connection."
             ) from None
+
+    def validate_credentials(self, model: str, credentials: dict) -> None:
+        if model not in self.available_model_ids(credentials):
+            raise CredentialsValidateFailedError(
+                "Model ID not found. Use an exact ID from the Ace Data Cloud model catalog."
+            )
 
     def _invoke(
         self,

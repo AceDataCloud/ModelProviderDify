@@ -19,9 +19,24 @@ help:
     en_US: Get an API key and check model availability
     zh_Hans: 获取 API Key 并查看可用模型
   url:
-    en_US: https://platform.acedata.cloud
+    en_US: https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
+    zh_Hans: https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
 supported_model_types: [llm]
-configurate_methods: [customizable-model]
+configurate_methods: [predefined-model, customizable-model]
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: Ace Data Cloud API key
+        zh_Hans: Ace Data Cloud API Key
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Paste your API token without Bearer
+        zh_Hans: 粘贴原始 API Token，不要带 Bearer
+      help:
+        en_US: Use an application API key with model access. Saving only reads the model catalog.
+        zh_Hans: 使用具有模型权限的应用 API Key。保存时只读取模型目录。
 model_credential_schema:
   model:
     label:
@@ -102,6 +117,11 @@ model_credential_schema:
           label:
             en_US: Enabled (supported models only)
             zh_Hans: 启用（仅限支持的模型）
+models:
+  llm:
+    predefined:
+      - models/llm/*.yaml
+    position: models/llm/_position.yaml
 extra:
   python:
     provider_source: provider/acedatacloud.py
