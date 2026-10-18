@@ -2,7 +2,7 @@
 
 Install **Ace Data Cloud** as a Dify model provider, save one API key, and select **GPT-4.1 mini** in an LLM node. The preset supplies the endpoint and conservative limits; you do not have to type a Base URL, model ID or capability settings. This example turns three expense amounts into JSON and previously ran in Dify CE 1.17.1.
 
-**Version 0.0.4 release status:** the provider-wide key and preset model are prepared in source and require source review and Marketplace publication. The currently published 0.0.3 uses the custom-model form documented below. The screenshots are real historical Dify CE 1.17.1 captures from October 9, 2026; they do not show the new provider-key form or prove 0.0.4 installation.
+**Version 0.0.4 guide:** provider-wide credentials and the preset model are available when this plugin version is installed. Check the version in your Dify workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); an older installed or public version may still use the custom-model form below. The screenshots are real historical Dify CE 1.17.1 captures from October 9, 2026; they do not show the new provider-key form or prove 0.0.4 installation.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -35,7 +35,7 @@ This is the standard Dify model-provider plugin mechanism used for named provide
 
 ### Published 0.0.3 and optional custom models
 
-Use this existing path for a custom model or while 0.0.4 is awaiting publication. It remains supported after upgrading.
+Use this existing path for a custom model or an installed version earlier than 0.0.4. It remains supported after upgrading.
 
 Open **Integrations → Model Provider → Ace Data Cloud → Add Model** and fill:
 
