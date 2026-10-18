@@ -79,6 +79,18 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         schema.pricing = None
         return schema
 
+    def get_model_schema(self, model: str, credentials: dict | None = None):
+        custom_fields = {
+            "context_size",
+            "max_tokens_to_sample",
+            "function_calling_type",
+            "stream_function_calling",
+            "vision_support",
+        }
+        if credentials and custom_fields.intersection(credentials):
+            return self.get_customizable_model_schema_from_credentials(model, credentials)
+        return super().get_model_schema(model, credentials)
+
     @staticmethod
     def available_model_ids(credentials: dict) -> set[str]:
         credentials = AceDataCloudLLM._credentials(credentials)

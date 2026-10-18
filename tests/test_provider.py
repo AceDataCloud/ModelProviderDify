@@ -154,6 +154,30 @@ def test_registered_preset_is_selectable_with_only_provider_key():
     assert model.get_model_schema("custom-chat-model", {"api_key": "test-placeholder"}) is not None
 
 
+def test_custom_credentials_for_preset_id_keep_explicit_limits_and_features():
+    from dify_plugin.config.config import DifyPluginEnv
+    from dify_plugin.core.plugin_registration import PluginRegistration
+    from dify_plugin.entities.model import ModelType
+
+    model = PluginRegistration(DifyPluginEnv()).get_model_instance("acedatacloud", ModelType.LLM)
+    schema = model.get_model_schema(
+        "gpt-4.1-mini",
+        {
+            "api_key": "test-placeholder",
+            "context_size": "8192",
+            "max_tokens_to_sample": "512",
+            "function_calling_type": "tool_call",
+            "vision_support": "support",
+        },
+    )
+    properties = {key.value: value for key, value in schema.model_properties.items()}
+    assert properties["context_size"] == 8192
+    assert ModelFeature.MULTI_TOOL_CALL in schema.features
+    assert ModelFeature.VISION in schema.features
+    assert next(rule for rule in schema.parameter_rules if rule.name == "max_tokens").max == 512
+    assert schema.pricing is None
+
+
 @pytest.mark.parametrize(
     "status,error",
     [
