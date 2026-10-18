@@ -27,6 +27,14 @@ def llm():
     return AceDataCloudLLM([])
 
 
+@pytest.fixture
+def provider():
+    from dify_plugin.config.config import DifyPluginEnv
+    from dify_plugin.core.plugin_registration import PluginRegistration
+
+    return PluginRegistration(DifyPluginEnv()).get_model_provider_instance("acedatacloud")
+
+
 def response(body, status=200):
     r = requests.Response()
     r.status_code = status
@@ -95,6 +103,55 @@ def test_validation_is_read_only_and_rejects_unknown_model(llm, monkeypatch):
     assert calls[0][1]["allow_redirects"] is False
     with pytest.raises(CredentialsValidateFailedError):
         llm.validate_credentials("missing", {"api_key": "test-placeholder"})
+
+
+def test_provider_key_enables_preset_without_paid_validation(monkeypatch, provider):
+    calls = []
+
+    def get(url, **kwargs):
+        calls.append((url, kwargs))
+        return response({"data": [{"id": "gpt-4.1-mini"}]})
+
+    monkeypatch.setattr(requests, "get", get)
+    monkeypatch.setattr(
+        requests, "post", lambda *a, **k: pytest.fail("provider setup generated output")
+    )
+    provider.validate_provider_credentials({"api_key": "test-placeholder"})
+    assert len(calls) == 1
+    assert calls[0][0] == API_BASE + "/models"
+    assert calls[0][1]["allow_redirects"] is False
+
+
+@pytest.mark.parametrize("body", [{"data": []}, {"data": [{}]}, {"data": [{"id": 42}]}])
+def test_provider_rejects_empty_or_invalid_catalog(monkeypatch, body, provider):
+    monkeypatch.setattr(requests, "get", lambda *a, **kw: response(body))
+    with pytest.raises(CredentialsValidateFailedError):
+        provider.validate_provider_credentials({"api_key": "test-placeholder"})
+
+
+def test_registered_preset_is_selectable_with_only_provider_key():
+    from dify_plugin.config.config import DifyPluginEnv
+    from dify_plugin.core.plugin_registration import PluginRegistration
+    from dify_plugin.entities.model import ModelType
+
+    registration = PluginRegistration(DifyPluginEnv())
+    provider = registration.get_model_provider_instance("acedatacloud")
+    schema = provider.get_provider_schema()
+    assert {method.value for method in schema.configurate_methods} == {
+        "predefined-model",
+        "customizable-model",
+    }
+    assert [
+        field.variable for field in schema.provider_credential_schema.credential_form_schemas
+    ] == ["api_key"]
+    model = registration.get_model_instance("acedatacloud", ModelType.LLM)
+    assert [item.model for item in model.predefined_models()] == ["gpt-4.1-mini"]
+    preset = model.get_model_schema("gpt-4.1-mini", {"api_key": "test-placeholder"})
+    assert {key.value: value for key, value in preset.model_properties.items()}[
+        "context_size"
+    ] == 128000
+    assert not preset.features and preset.pricing is None
+    assert model.get_model_schema("custom-chat-model", {"api_key": "test-placeholder"}) is not None
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,9 @@
 from dify_plugin.interfaces.model import ModelProvider
 
+from models.llm.llm import AceDataCloudLLM
+
 
 class AceDataCloudProvider(ModelProvider):
     def validate_provider_credentials(self, credentials: dict) -> None:
-        """This provider validates credentials separately for each custom model."""
+        """Save one provider key without generating a model response."""
+        AceDataCloudLLM.available_model_ids(credentials)

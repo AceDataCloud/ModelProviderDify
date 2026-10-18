@@ -1,6 +1,8 @@
 # Ace Data Cloud 模型供应商：手把手跑通第一个 Dify 工作流
 
-把聊天模型接入 Dify，将三项金额汇总为 JSON。本例使用 `gpt-4.1-mini`，已在真实 Dify CE 1.17.1 中运行。
+安装 **Ace Data Cloud 模型供应商**，保存一个 API Key，即可在 LLM 节点选择 **GPT-4.1 mini**。预设已提供接口地址和保守参数，不用手填 Base URL、模型 ID 或能力开关。下方三项金额汇总示例曾在真实 Dify CE 1.17.1 中运行。
+
+**0.0.4 发布状态：**供应商统一 Key 和预设模型已在源码中准备，仍需源码审核及 Marketplace 发布。当前公开 0.0.3 使用下方的自定义模型表单。文中的截图来自 2026 年 10 月 9 日真实 Dify CE 1.17.1，不展示新的供应商 Key 表单，也不能证明 0.0.4 已安装。
 
 [English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -25,6 +27,16 @@
 
 ## 3. 在 Dify 添加模型
 
+### 0.0.4：保存供应商 Key，再选择预设模型
+
+进入 **Integrations → Model Provider → Ace Data Cloud**，配置供应商凭据，粘贴自己的 **Ace Data Cloud API key**。保存仅执行只读 `/v1/models` 查询，不生成内容。在 LLM 节点中选择 **Ace Data Cloud → GPT-4.1 mini** 即可。预设采用 128,000 Token 上下文和 1,024 Token 最大输出，默认关闭图片与工具调用；仍需具备对应模型权限和余额。若账号无法使用该模型，可通过下方自定义方式添加目录中确实可用的模型，插件不会自动换模型。
+
+这是 Dify 命名模型供应商使用的标准插件机制。市场安装不表示 Dify Cloud 或新建自部署工作区会默认安装 Ace；本次更新不改生产默认配置。
+
+### 当前公开 0.0.3 及可选自定义模型
+
+0.0.4 待发布期间，或需要其他自定义模型时，使用下面已有路径；升级后仍然支持。
+
 进入 **Integrations → Model Provider → Ace Data Cloud → Add Model**：
 
 | 字段 | 首跑填写 |
@@ -41,7 +53,7 @@
 
 点 **Add（添加）**。插件已经配置接口地址和 Chat Completions 模式，不用再填 Base URL。保存只查询模型列表，不生成付费内容。
 
-![真实添加模型窗口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
+![历史自定义模型窗口：Dify CE 1.17.1，2026年10月9日](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
 
 ## 4. 连接 Start → LLM → Output
 
@@ -88,7 +100,7 @@ Output 新增 `summary_json`，变量选择 **LLM → text**，类型为 String�
 | 现象 | 检查方法 |
 |---|---|
 | 保存模型失败 | 核对精确模型 ID、生成 API Token、过期时间、服务权限、Allowed APIs。 |
-| LLM 下拉框没有模型 | 先在 Ace Data Cloud 下添加自定义模型，再回节点选择对应供应商和模型。 |
+| LLM 下拉框没有模型 | 0.0.4 保存供应商 Key 后检查预设模型权限；0.0.3 先添加自定义模型。 |
 | 401/403 | 检查 Key、权限、内容限制及余额；反馈时不要发送 Key。 |
 | 429 | 稍后再试并降低并发。 |
 | 超时/5xx | 重提前先看请求历史；插件不自动重试付费调用。 |
