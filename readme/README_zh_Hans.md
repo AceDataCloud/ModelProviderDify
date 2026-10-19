@@ -2,7 +2,7 @@
 
 安装 **Ace Data Cloud 模型供应商**，保存 API Key，再选择 **GPT-4.1 mini**。预设已提供接口地址和保守参数，不用手填 Base URL、模型 ID 或能力开关。先完成下方不运行模型的接入步骤；金额汇总工作流是可选的历史示例。
 
-**2026年10月20日真实接入验收：**Dify CE1.17.1正常签名安装 Marketplace **0.0.4** 后，原生凭据保存与实际模型选择通过，没有运行模型。下方公开三张原图和[脱敏验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json)。Applications操作示意图为10月8日旧图，工作流/结果图为10月9日历史实拍。
+**2026年10月20日真实接入验收：**Dify CE1.17.1正常签名安装 Marketplace **0.0.4** 后，原生凭据保存与实际模型选择通过，没有运行模型。下方公开三张原图和[脱敏验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)。Applications操作示意图为北京时间10月9日旧图（UTC时间为10月8日），工作流/结果图为10月9日历史实拍。
 
 [English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -42,7 +42,7 @@ Applications旧图展示已有密钥管理流程，图中的创建窗口当时�
 
 ![原生模型选择器：保留半透明popover过渡的真实原图](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/02-native-model-picker.png)
 
-popover处于真实半透明过渡帧，不能当作稳定截图；[验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json)另行记录了实际 provider/model 元数据与真实点击选择结果。
+popover处于真实半透明过渡帧，不能当作稳定截图；[验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)另行记录了实际 provider/model 元数据与真实点击选择结果。
 
 ![GPT-4.1 mini在未保存设置草稿中选中：真实过渡帧](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/03-native-model-draft-selected.png)
 
@@ -125,7 +125,7 @@ Output 新增 `summary_json`，变量选择 **LLM → text**，类型为 String�
 | 模型选择 | 原生元数据包含Ace / `gpt-4.1-mini`，真实点击选择器并在未保存设置草稿中显示选中。 |
 | 边界 | 没有模型/生成请求、响应mock、复用用户profile/cookie或提交工作区默认模型；临时fixture已正常清理。 |
 
-[公开脱敏记录与原图哈希](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json)证明正常安装和原生接入，不代表默认预装、Dify Cloud、收费推理、唯一账单或渠道归因通过。本次没有新建专用Applications Token。02/03原图如实保留过渡半透明，没有为美观再开环境或重跑已成功的Save。
+[公开脱敏记录与原图哈希](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)证明正常安装和原生接入，不代表默认预装、Dify Cloud、收费推理、唯一账单或渠道归因通过。本次没有新建专用Applications Token。02/03原图如实保留过渡半透明，没有为美观再开环境或重跑已成功的Save。
 
 本源码仓指南可能新于已发布的不可变0.0.4市场包内README。本次只更新文档，不重包或替换已有0.0.4。
 
