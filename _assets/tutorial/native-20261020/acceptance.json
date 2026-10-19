@@ -40,7 +40,7 @@
     "The model picker is a native Default Model Settings draft; it is not an LLM node execution and system defaults were not saved.",
     "Images02/03 retain real semi-transparent popover transitions; originals were not retouched or recaptured."
   ],
-  "historical_assets": "Existing Applications screenshots are dated2026-10-08 and show a Create dialog cancelled without creating a key; the expense-workflow run/screenshots are dated2026-10-09, not rerun for this record.",
+  "historical_assets": "Existing Applications screenshots were captured2026-10-08T17:15:13.782Z, which is2026-10-09T01:15:13.782+08:00. The Create dialog was cancelled without creating a key. The expense-workflow screenshots/run are also dated2026-10-09; none were rerun for this record.",
   "image_policy": "Root reviewed these public originals; byte-identical copies, no new screenshots, response mocks or success-state edits.",
   "files": [
     {
@@ -76,5 +76,7 @@
         "zh": "在未保存设置草稿中实际点击选中GPT-4.1 mini；仍为半透明过渡帧，没有提交系统默认模型。"
       }
     }
-  ]
+  ],
+  "captured_at_local": "2026-10-20T05:54:30.032000+08:00",
+  "capture_timezone": "Asia/Shanghai"
 }
