@@ -1,27 +1,29 @@
 # Ace Data Cloud model provider: your first Dify workflow
 
-Install **Ace Data Cloud** as a Dify model provider, save one API key, and select **GPT-4.1 mini** in an LLM node. The preset supplies the endpoint and conservative limits; you do not have to type a Base URL, model ID or capability settings. This example turns three expense amounts into JSON and previously ran in Dify CE 1.17.1.
+Install **Ace Data Cloud** as a Dify model provider, save an API key, and select **GPT-4.1 mini**. The preset supplies the endpoint and conservative limits, so you do not have to type a Base URL, model ID or capability settings. Start with the no-inference setup below; the optional expense-workflow example is historical.
 
-**Version 0.0.4 guide:** provider-wide credentials and the preset model are available when this plugin version is installed. Check the version in your Dify workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); an older installed or public version may still use the custom-model form below. The screenshots are real historical Dify CE 1.17.1 captures from October 9, 2026; they do not show the new provider-key form or prove 0.0.4 installation.
+**Verified setup, October 20, 2026 (UTC+8):** Dify CE 1.17.1 with the ordinary signed Marketplace **0.0.4** package passed native credential saving and real model-picker selection without running a model. Three original captures and a [sanitized acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json) are public below. The Applications illustrations are dated October 8; the older workflow/result images are dated October 9.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
 ## 1. Install the model provider
 
-Open the Marketplace link above, check **Ace Data Cloud** by **acedatacloud**, click **Install**, and choose your workspace. In Dify, open **Integrations → Model Provider**. You should see **Ace Data Cloud**. This is a model provider; do not look for it under Tools.
+Open the Marketplace link above, check **Ace Data Cloud**, published by **Ace Data Cloud (`acedatacloud`)**, click **Install**, and choose your workspace. In Dify, open **Integrations → Model Provider**. You should see **Ace Data Cloud**. This is a model provider; do not look for it under Tools.
 
-## 2. Copy or create your API key
+## 2. Create a dedicated Dify key in Applications
 
 New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
 
 1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General application**.
-2. Click **1** in the screenshot to copy the selected API key. For a separate Dify key, use **2 → Manage Keys → Create**.
+2. For a key dedicated to this Dify workspace, choose **2 → Manage Keys → Create**. Give it a recognizable name such as `Dify workspace`. If you already have an authorized consumer key, **1** copies that selected key instead.
 
 ![Copy the selected key or open key management](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
 
-3. Name the new key, optionally set expiration and usage/API restrictions, then click **Create**. Return to the list or application card and copy it.
+3. Set an appropriate expiration and usage/API restrictions, then click **Create**. Return to the key list or application card and copy the token. A separate key lets you revoke this integration without rotating other integrations.
 
-![Create an optional separate API key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
+![Applications guide: create a separate Dify-purpose API key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
+
+The Applications illustrations show the existing key-management flow; the pictured Create dialog was cancelled. They are instructions, not evidence that a new key was created. The October 20 acceptance used a previously authorized consumer API credential.
 
 A general-application key can access multiple services your account is entitled to use; a service-specific key is limited to its service. Confirm `gpt-4.1-mini` access and balance before the first run. If you restrict Allowed APIs, permit the unified model listing `/v1/models` and Chat Completions `/v1/chat/completions`. Paste only the token string in Dify, without `Bearer ` or quotation marks. Do not use a platform management token.
 
@@ -29,11 +31,28 @@ A general-application key can access multiple services your account is entitled 
 
 ### Version 0.0.4: one provider key, then select the preset
 
-In **Integrations → Model Provider → Ace Data Cloud**, configure the provider credential and paste your **Ace Data Cloud API key**. Saving makes only a read-only `/v1/models` request; it does not generate a response. In an LLM node, choose **Ace Data Cloud → GPT-4.1 mini**. The preset uses a conservative 128,000-token context and a 1,024-token maximum output, with optional vision and tool calling disabled. Service access and balance still apply. If the model is unavailable for your account, choose an exact available model through the custom-model form; no substitute is chosen automatically.
+1. Open **Integrations → Model Provider → Ace Data Cloud → Configure**. In the credential dialog, enter a recognizable name if requested and paste your **Ace Data Cloud API key** into the secret API-key field. Use the token only, not a management credential or `Bearer ` prefix.
+2. Click **Save** once. Saving checks access through read-only `/v1/models`; it does not generate a model response. If saving times out, check the existing credential before trying again.
+
+![Actual Ace Data Cloud 0.0.4 configured state, October 20 2026](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/01-native-provider-configured.png)
+
+This original capture shows the configured result after saving, not the secret-entry action. No key value is shown.
+
+3. To inspect the native picker without running a workflow, open **Default Models**, expand **System Reasoning Model**, and select **Ace Data Cloud → GPT-4.1 mini**. The following captures show that native settings picker; they are not LLM-node execution screenshots.
+
+![Native model picker: original semi-transparent transition frame](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/02-native-model-picker.png)
+
+The popover was captured during its real semi-transparent transition. This is not a stable-frame capture; the [acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json) separately records the observed provider/model metadata and actual selection.
+
+![GPT-4.1 mini selected in an unsaved settings draft: original transition frame](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/03-native-model-draft-selected.png)
+
+The second picker capture also retains its transition transparency. **Cancel** closes this inspection without saving workspace defaults; the recorded acceptance stopped with the model selected in an unsaved, unrun draft. For a workflow, choose the same **Ace Data Cloud → GPT-4.1 mini** preset in its LLM node before running it.
+
+The preset uses a conservative 128,000-token context and a 1,024-token maximum output, with optional vision and tool calling disabled. Service access and balance still apply. If the model is unavailable for your account, choose an exact available model through the custom-model form; no substitute is chosen automatically.
 
 This is the standard Dify model-provider plugin mechanism used for named providers. Marketplace installation does not mean Dify Cloud or a new self-hosted workspace installs Ace by default. No production setting is changed by this release.
 
-### Published 0.0.3 and optional custom models
+### Optional custom models and older installed versions
 
 Use this existing path for a custom model or an installed version earlier than 0.0.4. It remains supported after upgrading.
 
@@ -56,6 +75,8 @@ Click **Add**. The API endpoint and Chat Completions mode are supplied by the pl
 ![Historical custom-model dialog, Dify CE 1.17.1, October 9 2026](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
 
 ## 4. Create Start → LLM → Output
+
+The expense-workflow example and its result images below are from October 9,2026. They were not rerun for the October 20 setup acceptance. Running the model in step5 uses your account’s current service pricing.
 
 In **Studio**, click **Create → Create from Blank → Workflow**. Name it `Expense summary`. Add an **LLM** node and an **Output** node using **+**, and drag the connectors in this order:
 
@@ -96,6 +117,19 @@ When the three nodes finish, `summary_json` should be valid JSON with the origin
 ![Actual successful expense-summary run](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/06-result.png)
 
 [Download the importable workflow](https://github.com/AceDataCloud/ModelProviderDify/raw/refs/heads/main/docs/quickstart.dify.yml). Import it in Studio and configure your own key; it contains no credentials.
+
+## What the October 20 acceptance proved
+
+| Check | Recorded result |
+|---|---|
+| Installation | Ordinary signed Marketplace Provider 0.0.4, exact package identifier and verified status read back. |
+| Native credentials | One Save returned 201; a separate read-only database check found one matching named credential and the active selection matched it. No credential values were selected. |
+| Model selection | Native metadata contained Ace / `gpt-4.1-mini`; the picker was clicked and showed it selected in an unsaved settings draft. |
+| Boundaries | No model/generation request, response mock, existing user profile/cookie reuse or workspace-default Save. Temporary fixture normally cleaned. |
+
+See the [public sanitized record and original-image hashes](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json). This proves normal installation and native setup, not default preinstallation, Dify Cloud acceptance, paid inference, unique billing or attribution. No new dedicated Applications key was created for this acceptance. Images 02/03 honestly retain transition transparency; no environment or successful Save was rerun for cosmetic screenshots.
+
+This repository guide can be newer than the README bundled in the immutable 0.0.4 Marketplace package. This documentation update does not rebuild or replace that package.
 
 ## Troubleshooting and cost
 
