@@ -2,7 +2,7 @@
 
 Install **Ace Data Cloud** as a Dify model provider, save an API key, and select **GPT-4.1 mini**. The preset supplies the endpoint and conservative limits, so you do not have to type a Base URL, model ID or capability settings. Start with the no-inference setup below; the optional expense-workflow example is historical.
 
-**Verified setup, October 20, 2026 (UTC+8):** Dify CE 1.17.1 with the ordinary signed Marketplace **0.0.4** package passed native credential saving and real model-picker selection without running a model. Three original captures and a [sanitized acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json) are public below. The Applications illustrations are dated October 8; the older workflow/result images are dated October 9.
+**Verified setup, October 20, 2026 (UTC+8):** Dify CE 1.17.1 with the ordinary signed Marketplace **0.0.4** package passed native credential saving and real model-picker selection without running a model. Three original captures and a [sanitized acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json) are public below. The Applications illustrations were captured on October 9 (UTC+8; October 8 UTC); the older workflow/result images are dated October 9.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
 
@@ -42,7 +42,7 @@ This original capture shows the configured result after saving, not the secret-e
 
 ![Native model picker: original semi-transparent transition frame](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/02-native-model-picker.png)
 
-The popover was captured during its real semi-transparent transition. This is not a stable-frame capture; the [acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json) separately records the observed provider/model metadata and actual selection.
+The popover was captured during its real semi-transparent transition. This is not a stable-frame capture; the [acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json) separately records the observed provider/model metadata and actual selection.
 
 ![GPT-4.1 mini selected in an unsaved settings draft: original transition frame](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/03-native-model-draft-selected.png)
 
@@ -127,7 +127,7 @@ When the three nodes finish, `summary_json` should be valid JSON with the origin
 | Model selection | Native metadata contained Ace / `gpt-4.1-mini`; the picker was clicked and showed it selected in an unsaved settings draft. |
 | Boundaries | No model/generation request, response mock, existing user profile/cookie reuse or workspace-default Save. Temporary fixture normally cleaned. |
 
-See the [public sanitized record and original-image hashes](https://github.com/AceDataCloud/ModelProviderDify/blob/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/acceptance.json). This proves normal installation and native setup, not default preinstallation, Dify Cloud acceptance, paid inference, unique billing or attribution. No new dedicated Applications key was created for this acceptance. Images 02/03 honestly retain transition transparency; no environment or successful Save was rerun for cosmetic screenshots.
+See the [public sanitized record and original-image hashes](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json). This proves normal installation and native setup, not default preinstallation, Dify Cloud acceptance, paid inference, unique billing or attribution. No new dedicated Applications key was created for this acceptance. Images 02/03 honestly retain transition transparency; no environment or successful Save was rerun for cosmetic screenshots.
 
 This repository guide can be newer than the README bundled in the immutable 0.0.4 Marketplace package. This documentation update does not rebuild or replace that package.
 
