@@ -1,0 +1,80 @@
+{
+  "captured_at": "2026-10-19T21:54:30.032Z",
+  "capture_reference": "39330648990",
+  "original_CI_visibility": "Restricted; original reviewed screenshots and sanitized acceptance outcomes are published in this public source repository.",
+  "host": "Dify Community Edition1.17.1",
+  "provider": {
+    "publisher": "Ace Data Cloud",
+    "author": "acedatacloud",
+    "version": "0.0.4",
+    "installation": "ordinary signed Marketplace install",
+    "unique_identifier": "acedatacloud/acedatacloud:0.0.4@0899698bb9899350730535a8fdca70dac96af58f112f2bc56f8c6fd659efbecc",
+    "verified": true
+  },
+  "native_acceptance": {
+    "login_http": 200,
+    "credential_save_http": 201,
+    "credential_create_attempts": 1,
+    "baseline_named_credential_count": 0,
+    "final_total_provider_credentials": 1,
+    "final_exact_named_count": 1,
+    "active_credential_matches_named_row": true,
+    "credential_values_selected": false,
+    "available_model": {
+      "provider": "acedatacloud/acedatacloud/acedatacloud",
+      "model": "gpt-4.1-mini",
+      "observed": true
+    },
+    "model_actually_selected_in_unsaved_unrun_draft": true,
+    "system_default_save_submitted": false,
+    "model_or_generation_methods_sent": 0,
+    "inference_counter_basis": "Guarded browser methods and signed provider validation source; not packet counters",
+    "response_mocks": 0,
+    "existing_user_profile_or_cookies_used": false,
+    "temporary_fixture_normally_cleaned": true
+  },
+  "credential_scope": "A previously authorized consumer API credential was used. No new dedicated Applications key was created during this acceptance; creating one is a user setup recommendation. No credential, secret name, fixture password or cookie is published.",
+  "limits": [
+    "This is signed installation and native credential/model-picker acceptance, not paid inference E2E.",
+    "No default preinstallation, Dify Cloud acceptance, unique billing, acquisition attribution or revenue is claimed.",
+    "The model picker is a native Default Model Settings draft; it is not an LLM node execution and system defaults were not saved.",
+    "Images02/03 retain real semi-transparent popover transitions; originals were not retouched or recaptured."
+  ],
+  "historical_assets": "Existing Applications screenshots are dated2026-10-08 and show a Create dialog cancelled without creating a key; the expense-workflow run/screenshots are dated2026-10-09, not rerun for this record.",
+  "image_policy": "Root reviewed these public originals; byte-identical copies, no new screenshots, response mocks or success-state edits.",
+  "files": [
+    {
+      "file": "01-native-provider-configured.png",
+      "sha256": "d3dc7c534eb9faf870457a2909584fc03f5dc2b7e40c003146c8d9e6deda50f3",
+      "bytes": 122343,
+      "width": 1600,
+      "height": 1100,
+      "caption": {
+        "en": "Saved Ace Data Cloud0.0.4 provider credential; clear configured status. The credential-entry action itself is not pictured.",
+        "zh": "Ace Data Cloud0.0.4原生凭据保存后的已配置状态；此图不展示输入Key的过程。"
+      }
+    },
+    {
+      "file": "02-native-model-picker.png",
+      "sha256": "45bdb4b6cd1353155cd5a975d36faeda5a08777afdb12f6ae717e4eaab3e5128",
+      "bytes": 146203,
+      "width": 1600,
+      "height": 1100,
+      "caption": {
+        "en": "Actual native model picker, captured during a semi-transparent popover transition; not a stable-frame capture.",
+        "zh": "真实原生模型选择器的半透明popover过渡帧，不冒充稳定截图。"
+      }
+    },
+    {
+      "file": "03-native-model-draft-selected.png",
+      "sha256": "77f8266e3bb153ffc56ac6d5e0433f4d54c546dc9fbae2f2ab52bff4cc09b336",
+      "bytes": 149824,
+      "width": 1600,
+      "height": 1100,
+      "caption": {
+        "en": "GPT-4.1 mini clicked/selected in an unsaved settings draft. Semi-transparent transition frame; system defaults were not submitted.",
+        "zh": "在未保存设置草稿中实际点击选中GPT-4.1 mini；仍为半透明过渡帧，没有提交系统默认模型。"
+      }
+    }
+  ]
+}
