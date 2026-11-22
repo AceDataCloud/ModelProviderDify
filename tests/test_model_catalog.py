@@ -35,7 +35,24 @@ def test_every_published_model_is_in_registered_dify_declaration():
 
 def test_generator_keeps_chat_image_and_maps_only_declared_capabilities(tmp_path):
     snapshot = project(
-        {"data": [{"id": "new-chat", "label": "New", "type": "chat", "capabilities": ["vision"]}]},
+        {
+            "data": [
+                {
+                    "id": "new-chat",
+                    "label": "New",
+                    "type": "chat",
+                    "capabilities": ["vision"],
+                    "endpoints": [
+                        {
+                            "protocol": "chat_completions",
+                            "path": "/v1/chat/completions",
+                            "auth": "bearer",
+                            "api_id": "fixture-api",
+                        }
+                    ],
+                }
+            ]
+        },
         {
             "items": [
                 {"id": "embed", "name": "Embed", "modality": "embedding"},

@@ -8,7 +8,7 @@ The plugin transmits your API key to `api.acedata.cloud` in an HTTPS Authorizati
 header. Credential validation reads the available model IDs. Model invocations
 send your selected model, conversation messages, system instructions, enabled
 image inputs, tool definitions, tool results and generation parameters to the same
-API to produce the requested answer. Prompts and tool results may contain personal
+API through the model's published Chat Completions or Messages protocol to produce the requested answer. Prompts and tool results may contain personal
 data if you include it. The service also receives ordinary request metadata,
 including the calling server's IP address and token usage needed to operate and
 bill the API.

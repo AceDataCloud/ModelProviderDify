@@ -23,12 +23,37 @@ def project(chat: dict, catalog: dict, audio: dict | None = None) -> dict:
     for item in chat["data"]:
         if item["type"] != "chat":
             continue
+        endpoints = item.get("endpoints", [])
+        endpoint = next(
+            (
+                entry
+                for protocol in ("chat_completions", "messages")
+                for entry in endpoints
+                if entry.get("protocol") == protocol
+            ),
+            None,
+        )
+        if endpoint is None:
+            raise ValueError(
+                f"No supported published chat protocol for {item['id']}; review the adapter before publishing"
+            )
+        expected_path = (
+            "/v1/messages" if endpoint["protocol"] == "messages" else "/v1/chat/completions"
+        )
+        if endpoint.get("path") != expected_path or endpoint.get("auth") != "bearer":
+            raise ValueError(f"Unexpected endpoint contract for {item['id']}")
         models.append(
             {
                 "id": item["id"],
                 "label": item["label"],
                 "type": "llm",
                 "features": ["vision"] if "vision" in item.get("capabilities", []) else [],
+                "endpoint": {
+                    "protocol": endpoint["protocol"],
+                    "path": endpoint["path"],
+                    "auth": "bearer",
+                    "api_id": endpoint["api_id"],
+                },
             }
         )
     for item in catalog["items"]:
@@ -104,9 +129,13 @@ def declarations(snapshot: dict) -> dict[str, str]:
                 "parameter_rules": [],
             }
             if model_type == "llm":
+                parameters = (
+                    ("temperature", "top_p")
+                    if item["endpoint"]["protocol"] == "messages"
+                    else ("temperature", "top_p", "presence_penalty", "frequency_penalty")
+                )
                 schema["parameter_rules"] = [
-                    {"name": name, "use_template": name}
-                    for name in ("temperature", "top_p", "presence_penalty", "frequency_penalty")
+                    {"name": name, "use_template": name} for name in parameters
                 ] + [
                     {
                         "name": "max_tokens",

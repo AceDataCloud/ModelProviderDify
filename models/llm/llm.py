@@ -1,6 +1,8 @@
 """Ace Data Cloud's fixed Chat Completions endpoint using Dify's message adapters."""
 
+import json
 from collections.abc import Generator
+from pathlib import Path
 
 import requests
 from dify_plugin.entities.model import ModelFeature
@@ -15,7 +17,14 @@ from dify_plugin.errors.model import (
 )
 from dify_plugin.interfaces.model.openai_compatible import llm as compatible
 
+from models.llm.messages import MessagesResponse, request_payload
+
 API_BASE = "https://api.acedata.cloud/v1"
+MODEL_ENDPOINTS = {
+    item["id"]: item["endpoint"]
+    for item in json.loads(Path(__file__).parents[1].joinpath("catalog.json").read_text())["models"]
+    if item["type"] == "llm"
+}
 CUSTOM_FIELDS = {
     "context_size",
     "max_tokens_to_sample",
@@ -163,10 +172,17 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
             payload["stop"] = stop
         if stream:
             payload["stream_options"] = {"include_usage": True}
+        endpoint = MODEL_ENDPOINTS.get(
+            model, {"protocol": "chat_completions", "path": "/v1/chat/completions"}
+        )
+        headers = {"Authorization": f"Bearer {credentials['api_key']}"}
+        if endpoint["protocol"] == "messages":
+            payload = request_payload(payload)
+            headers["anthropic-version"] = "2023-06-01"
         try:
             response = requests.post(
-                f"{API_BASE}/chat/completions",
-                headers={"Authorization": f"Bearer {credentials['api_key']}"},
+                "https://api.acedata.cloud" + endpoint["path"],
+                headers=headers,
                 json=payload,
                 stream=stream,
                 timeout=(10, 120),
@@ -177,6 +193,8 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         try:
             self._check_response(response)
             response.encoding = "utf-8"
+            if endpoint["protocol"] == "messages":
+                response = MessagesResponse(response)
             if stream:
                 return self._stream(model, credentials, response, prompt_messages)
             return self._handle_generate_response(model, credentials, response, prompt_messages)

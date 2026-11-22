@@ -14,4 +14,3 @@ pyproject.toml
 validation-report/
 docs/
 scripts/
-models/catalog.json
