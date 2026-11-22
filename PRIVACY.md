@@ -13,9 +13,9 @@ data if you include it. The service also receives ordinary request metadata,
 including the calling server's IP address and token usage needed to operate and
 bill the API.
 
-Embedding requests send the selected embedding model and your input text to the
-same fixed API. Saving chat or embedding credentials reads only the model list;
-it does not make a paid generation or embedding request. The scheduled catalog
+Speech synthesis sends your selected model, voice and text; transcription sends the selected model and uploaded audio bytes. Embedding requests send the selected embedding model and your input text to the
+same fixed API. Saving chat, embedding or audio credentials reads only the model list;
+it does not make a paid generation, embedding or audio request. The scheduled catalog
 update runs in the source repository and reads public, unauthenticated metadata
 from `platform.acedata.cloud`; it does not receive a Dify credential or user input.
 

@@ -6,8 +6,8 @@ label:
   en_US: Ace Data Cloud
   zh_Hans: Ace Data Cloud
 description:
-  en_US: All published Ace Data Cloud chat and embedding models, with streaming and model-specific image input.
-  zh_Hans: 使用 Ace Data Cloud 完整公开聊天和向量模型目录，支持流式输出及按模型声明的图片输入。
+  en_US: Published Ace Data Cloud chat, embedding, speech synthesis and transcription models.
+  zh_Hans: 使用 Ace Data Cloud 完整公开聊天、向量、语音合成与转写模型。
 icon: icon.png
 icon_dark: icon.png
 tags:
@@ -19,6 +19,8 @@ resource:
       enabled: true
       llm: true
       text_embedding: true
+      tts: true
+      speech2text: true
 plugins:
   models:
   - provider/acedatacloud.yaml

@@ -9,11 +9,15 @@ import yaml
 
 CHAT_URL = "https://platform.acedata.cloud/api/v1/models/"
 CATALOG_URL = "https://platform.acedata.cloud/api/v1/models/catalog/"
+AUDIO_SOURCES = {
+    "tts": "https://platform.acedata.cloud/api/v1/apis/078d0146-f820-4617-b98e-47ba15a93d60/",
+    "speech2text": "https://platform.acedata.cloud/api/v1/apis/60f037ff-7d2f-4ea4-ae42-feba542c8cb2/",
+}
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT = ROOT / "models/catalog.json"
 
 
-def project(chat: dict, catalog: dict) -> dict:
+def project(chat: dict, catalog: dict, audio: dict | None = None) -> dict:
     """Do not infer model type, context windows, prices or tools from names."""
     models = []
     for item in chat["data"]:
@@ -37,18 +41,51 @@ def project(chat: dict, catalog: dict) -> dict:
                     "features": [],
                 }
             )
-    for model_type in ("llm", "text-embedding"):
+    for model_type, api in (audio or {}).items():
+        content = api["definition"]["paths"][api["path"]]["post"]["requestBody"]["content"]
+        mime = "application/json" if model_type == "tts" else "multipart/form-data"
+        properties = content[mime]["schema"]["properties"]
+        for model in properties["model"]["enum"]:
+            model_properties = {}
+            if model_type == "tts":
+                if "mp3" not in properties["response_format"]["enum"]:
+                    raise ValueError("The published TTS API no longer supports MP3")
+                model_properties = {
+                    "voices": [
+                        {"name": voice, "mode": voice} for voice in properties["voice"]["enum"]
+                    ],
+                    "default_voice": properties["voice"]["default"],
+                    "audio_type": "mp3",
+                }
+            models.append(
+                {
+                    "id": model,
+                    "label": model,
+                    "type": model_type,
+                    "features": [],
+                    "properties": model_properties,
+                }
+            )
+    for model_type in ("llm", "text-embedding", *(audio or {})):
         ids = [m["id"] for m in models if m["type"] == model_type]
         if not ids or len(ids) != len(set(ids)):
             raise ValueError(f"Empty or duplicate {model_type} catalog")
     if any(not m["id"] or "/" in m["id"] or "\\" in m["id"] for m in models):
         raise ValueError("Invalid model ID")
-    return {"sources": [CHAT_URL, CATALOG_URL], "models": models}
+    return {
+        "sources": [CHAT_URL, CATALOG_URL, *[AUDIO_SOURCES[key] for key in (audio or {})]],
+        "models": models,
+    }
 
 
 def declarations(snapshot: dict) -> dict[str, str]:
     files = {}
-    for model_type, directory in (("llm", "llm"), ("text-embedding", "text_embedding")):
+    for model_type, directory in (
+        ("llm", "llm"),
+        ("text-embedding", "text_embedding"),
+        ("tts", "tts"),
+        ("speech2text", "speech2text"),
+    ):
         models = [item for item in snapshot["models"] if item["type"] == model_type]
         files[f"models/{directory}/_position.yaml"] = yaml.safe_dump(
             [item["id"] for item in models], sort_keys=False
@@ -61,7 +98,9 @@ def declarations(snapshot: dict) -> dict[str, str]:
                 "features": item["features"],
                 # The public catalog does not state model context windows. Dify's
                 # schema permits omission; do not use Codex truncation budgets.
-                "model_properties": {"mode": "chat"} if model_type == "llm" else {},
+                "model_properties": {"mode": "chat"}
+                if model_type == "llm"
+                else item.get("properties", {}),
                 "parameter_rules": [],
             }
             if model_type == "llm":
@@ -89,7 +128,7 @@ def sync(snapshot: dict, root: Path = ROOT, check: bool = False) -> list[str]:
     files["models/catalog.json"] = json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n"
     existing = {
         str(path.relative_to(root))
-        for directory in ("llm", "text_embedding")
+        for directory in ("llm", "text_embedding", "tts", "speech2text")
         for path in (root / "models" / directory).glob("*.yaml")
     }
     changed = []
@@ -122,7 +161,11 @@ def main() -> None:
     parser.add_argument("--check", action="store_true", help="Fail on generated-file drift")
     args = parser.parse_args()
     snapshot = (
-        project(fetch(CHAT_URL), fetch(CATALOG_URL))
+        project(
+            fetch(CHAT_URL),
+            fetch(CATALOG_URL),
+            {key: fetch(url) for key, url in AUDIO_SOURCES.items()},
+        )
         if args.refresh
         else json.loads(SNAPSHOT.read_text())
     )

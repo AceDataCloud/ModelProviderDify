@@ -1,7 +1,9 @@
 {
   "sources": [
     "https://platform.acedata.cloud/api/v1/models/",
-    "https://platform.acedata.cloud/api/v1/models/catalog/"
+    "https://platform.acedata.cloud/api/v1/models/catalog/",
+    "https://platform.acedata.cloud/api/v1/apis/078d0146-f820-4617-b98e-47ba15a93d60/",
+    "https://platform.acedata.cloud/api/v1/apis/60f037ff-7d2f-4ea4-ae42-feba542c8cb2/"
   ],
   "models": [
     {
@@ -535,6 +537,20 @@
       "features": []
     },
     {
+      "id": "glm-4.5",
+      "label": "GLM-4.5",
+      "type": "llm",
+      "features": []
+    },
+    {
+      "id": "glm-4.5v",
+      "label": "GLM-4.5V",
+      "type": "llm",
+      "features": [
+        "vision"
+      ]
+    },
+    {
       "id": "glm-3-turbo",
       "label": "GLM-3 Turbo",
       "type": "llm",
@@ -767,6 +783,92 @@
       "label": "text-embedding-3-small",
       "type": "text-embedding",
       "features": []
+    },
+    {
+      "id": "tts-1",
+      "label": "tts-1",
+      "type": "tts",
+      "features": [],
+      "properties": {
+        "voices": [
+          {
+            "name": "alloy",
+            "mode": "alloy"
+          },
+          {
+            "name": "echo",
+            "mode": "echo"
+          },
+          {
+            "name": "fable",
+            "mode": "fable"
+          },
+          {
+            "name": "onyx",
+            "mode": "onyx"
+          },
+          {
+            "name": "nova",
+            "mode": "nova"
+          },
+          {
+            "name": "shimmer",
+            "mode": "shimmer"
+          }
+        ],
+        "default_voice": "alloy",
+        "audio_type": "mp3"
+      }
+    },
+    {
+      "id": "tts-1-hd",
+      "label": "tts-1-hd",
+      "type": "tts",
+      "features": [],
+      "properties": {
+        "voices": [
+          {
+            "name": "alloy",
+            "mode": "alloy"
+          },
+          {
+            "name": "echo",
+            "mode": "echo"
+          },
+          {
+            "name": "fable",
+            "mode": "fable"
+          },
+          {
+            "name": "onyx",
+            "mode": "onyx"
+          },
+          {
+            "name": "nova",
+            "mode": "nova"
+          },
+          {
+            "name": "shimmer",
+            "mode": "shimmer"
+          }
+        ],
+        "default_voice": "alloy",
+        "audio_type": "mp3"
+      }
+    },
+    {
+      "id": "whisper-1",
+      "label": "whisper-1",
+      "type": "speech2text",
+      "features": [],
+      "properties": {}
+    },
+    {
+      "id": "gpt-transcribe",
+      "label": "gpt-transcribe",
+      "type": "speech2text",
+      "features": [],
+      "properties": {}
     }
   ]
 }

@@ -74,7 +74,7 @@ jobs:
           gh auth setup-git
           git push origin "HEAD:refs/heads/$CATALOG_BRANCH"
           cat > /tmp/catalog-pr.md <<'EOF'
-          Refresh every chat and embedding model from the public typed Ace Data Cloud catalog. The generated declaration includes each published ID rather than a curated subset. The plugin version is incremented for the next Marketplace submission.
+          Refresh every chat, embedding and audio model from the public typed Ace Data Cloud catalog. The generated declaration includes each published ID rather than a curated subset. The plugin version is incremented for the next Marketplace submission.
 
           Validation: normal pytest discovery, complete generated-file parity, Ruff lint and format. Only public metadata was read; no credentials or paid inference were used. Source review and official Marketplace publication remain required before installed workspaces receive this update.
           EOF

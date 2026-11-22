@@ -1,8 +1,8 @@
 # Ace Data Cloud model provider for Dify
 
-Install **Ace Data Cloud**, save one provider API key, and select any published chat model in an LLM node or an embedding model in Knowledge settings. The complete typed catalog is included in the plugin: GPT, Claude, Gemini, Grok, DeepSeek, GLM, Kimi and other published chat models. It is not limited to GPT-4.1 mini. Existing custom models and workflow model IDs remain supported; upgrading does not change your workspace defaults.
+Install **Ace Data Cloud**, save one provider API key, and select any published chat model in an LLM node an embedding model in Knowledge settings, or speech/transcription models in the corresponding audio settings. The complete typed catalog is included in the plugin: GPT, Claude, Gemini, Grok, DeepSeek, GLM, Kimi and other published chat models. It is not limited to GPT-4.1 mini. Existing custom models and workflow model IDs remain supported; upgrading does not change your workspace defaults.
 
-**Version 0.0.6 source update:** the expanded catalog and embedding interface are in this version. Check the version installed in your workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); a source PR or package test does not mean the official release is published. The previously verified Marketplace 0.0.4 contains only the GPT-4.1 mini preset.
+**Version 0.0.6 source update:** the expanded catalog and embedding/audio interfaces are in this version. Check the version installed in your workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); a source PR or package test does not mean the official release is published. The previously verified Marketplace 0.0.4 contains only the GPT-4.1 mini preset.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud) · [Source](https://github.com/AceDataCloud/ModelProviderDify)
 
@@ -15,12 +15,13 @@ Install **Ace Data Cloud**, save one provider API key, and select any published 
 
 ![Applications: copy a key or manage keys, historical October 9 2026 illustration](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
 
-A general application key can access services your account is entitled to use; a service-specific key has narrower access. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions` or `/v1/embeddings`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
+A general application key can access services your account is entitled to use; a service-specific key has narrower access. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions` `/v1/embeddings`, `/v1/audio/speech` or `/v1/audio/transcriptions`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
 
 ## 2. Choose a model
 
 - **Chat:** in an LLM node or **Default Models → System Reasoning Model**, select Ace Data Cloud and search for the desired model ID, such as `gpt-6.2-astra`, `gpt-6.2-sol`, a Claude or Gemini model. Selecting an item without running the workflow does not call the model.
 - **Embeddings:** in Knowledge settings or the default embedding selector, choose an Ace Data Cloud embedding model. Saving credentials is read-only; indexing documents or running retrieval creates embedding API usage.
+- **Speech:** choose `tts-1` or `tts-1-hd` and one of the published voices for text-to-speech; choose `whisper-1` or `gpt-transcribe` for audio transcription. Generating speech or transcribing an uploaded file creates API usage. Credential Save does not run either operation.
 - **Chat with image input:** models whose public catalog declares vision expose Dify's image-input capability. `gpt-4o-image` is included because it is a published Chat Completions model. Image-only, audio and video generation APIs belong to their Dify tools, not the LLM selector.
 
 The catalog does not publish context-window or tool-calling metadata. The plugin leaves unknown context windows and pricing unset, and does not guess tool support from model names. Maximum output defaults to 1,024 tokens as an editable request setting; it is not an advertised model limit. Keep values within the selected model's current documented limits.
@@ -31,7 +32,7 @@ For an explicitly configured model, **Add Model** remains available. Use the exa
 
 Dify's native model picker reads the installed plugin's model declarations. Upgrade the plugin after a new Marketplace version is published. Installing from Marketplace does not make Ace a default provider in Dify Cloud or new self-hosted deployments.
 
-The source repository's daily **Sync published model catalog** job reads the [public chat directory](https://platform.acedata.cloud/api/v1/models/) and [typed model catalog](https://platform.acedata.cloud/api/v1/models/catalog/), regenerates every chat and embedding declaration, validates SDK registration and coverage, and opens a bot PR with a version bump when the catalog changes. Source review and official Marketplace review still apply. A new supported model can also be added through the custom-model form while an updated package is under review.
+The source repository's daily **Sync published model catalog** job reads the [public chat directory](https://platform.acedata.cloud/api/v1/models/) and [typed model catalog](https://platform.acedata.cloud/api/v1/models/catalog/), regenerates every chat, embedding, speech and transcription declaration, validates SDK registration and coverage, and opens a bot PR with a version bump when the catalog changes. Source review and official Marketplace review still apply. A new supported model can also be added through the custom-model form while an updated package is under review.
 
 For maintainers: `python scripts/sync_model_catalog.py --refresh` refreshes the complete snapshot; `python scripts/sync_model_catalog.py --check` checks reproducibility without network access. Do not hand-edit generated model YAMLs.
 
@@ -87,7 +88,7 @@ When the three nodes finish, `summary_json` should be valid JSON with the origin
 
 The [October 20, 2026 acceptance record](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json) proved ordinary signed Marketplace 0.0.4 installation, one credential Save, and selection of its single preset in an unsaved, unrun Dify CE 1.17.1 draft. It is historical evidence, not a new Dify Cloud or 0.0.6 full-catalog UI/inference test.
 
-The plugin is free. Chat and embedding API calls are billed at your account's current Ace Data Cloud prices. Dify may show a zero estimate because this plugin supplies no static price; **zero estimate does not mean free API usage**. The account usage ledger is authoritative. Per-request image-chat prices cannot be represented as token prices.
+The plugin is free. Chat, embedding and audio API calls are billed at your account's current Ace Data Cloud prices. Dify may show a zero estimate because this plugin supplies no static price; **zero estimate does not mean free API usage**. The account usage ledger is authoritative. Per-request image-chat prices cannot be represented as token prices.
 
 | Problem | Check |
 |---|---|

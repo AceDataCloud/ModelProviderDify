@@ -3,8 +3,8 @@ label:
   en_US: Ace Data Cloud
   zh_Hans: Ace Data Cloud
 description:
-  en_US: Published chat and embedding models through the Ace Data Cloud API.
-  zh_Hans: 通过 Ace Data Cloud API 使用公开聊天和向量模型。
+  en_US: Published chat, embedding and audio models through the Ace Data Cloud API.
+  zh_Hans: 通过 Ace Data Cloud API 使用公开聊天、向量与音频模型。
 icon_small:
   en_US: icon.png
 icon_large:
@@ -21,7 +21,7 @@ help:
   url:
     en_US: https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
     zh_Hans: https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
-supported_model_types: [llm, text-embedding]
+supported_model_types: [llm, text-embedding, tts, speech2text]
 configurate_methods: [predefined-model, customizable-model]
 provider_credential_schema:
   credential_form_schemas:
@@ -126,9 +126,19 @@ models:
     predefined:
       - models/text_embedding/*.yaml
     position: models/text_embedding/_position.yaml
+  tts:
+    predefined:
+      - models/tts/*.yaml
+    position: models/tts/_position.yaml
+  speech2text:
+    predefined:
+      - models/speech2text/*.yaml
+    position: models/speech2text/_position.yaml
 extra:
   python:
     provider_source: provider/acedatacloud.py
     model_sources:
       - models/llm/llm.py
       - models/text_embedding/text_embedding.py
+      - models/tts/tts.py
+      - models/speech2text/speech2text.py
