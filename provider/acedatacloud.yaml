@@ -19,8 +19,8 @@ help:
     en_US: Get an API key and check model availability
     zh_Hans: 获取 API Key 并查看可用模型
   url:
-    en_US: https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
-    zh_Hans: https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
+    en_US: https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
+    zh_Hans: https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_provider_api_key
 supported_model_types: [llm]
 configurate_methods: [predefined-model, customizable-model]
 provider_credential_schema:
