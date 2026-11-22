@@ -1,6 +1,6 @@
 # Privacy policy — Ace Data Cloud Dify model provider
 
-Effective date: 2026-10-06. Maintainer: Ace Data Cloud (dev@acedata.cloud).
+Effective date: 2026-11-23. Maintainer: Ace Data Cloud (dev@acedata.cloud).
 
 ## Data sent and purpose
 
@@ -12,6 +12,12 @@ API to produce the requested answer. Prompts and tool results may contain person
 data if you include it. The service also receives ordinary request metadata,
 including the calling server's IP address and token usage needed to operate and
 bill the API.
+
+Embedding requests send the selected embedding model and your input text to the
+same fixed API. Saving chat or embedding credentials reads only the model list;
+it does not make a paid generation or embedding request. The scheduled catalog
+update runs in the source repository and reads public, unauthenticated metadata
+from `platform.acedata.cloud`; it does not receive a Dify credential or user input.
 
 ## Storage, logging and recipients
 

@@ -1,4 +1,6 @@
 .git/
+.git
+.gitignore
 .github/
 .env*
 .venv/
@@ -11,3 +13,5 @@ tests/
 pyproject.toml
 validation-report/
 docs/
+scripts/
+models/catalog.json

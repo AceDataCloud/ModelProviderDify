@@ -3,6 +3,7 @@
 from collections.abc import Generator
 
 import requests
+from dify_plugin.entities.model import ModelFeature
 from dify_plugin.errors.model import (
     CredentialsValidateFailedError,
     InvokeAuthorizationError,
@@ -15,6 +16,13 @@ from dify_plugin.errors.model import (
 from dify_plugin.interfaces.model.openai_compatible import llm as compatible
 
 API_BASE = "https://api.acedata.cloud/v1"
+CUSTOM_FIELDS = {
+    "context_size",
+    "max_tokens_to_sample",
+    "function_calling_type",
+    "stream_function_calling",
+    "vision_support",
+}
 
 
 class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
@@ -80,16 +88,17 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         return schema
 
     def get_model_schema(self, model: str, credentials: dict | None = None):
-        custom_fields = {
-            "context_size",
-            "max_tokens_to_sample",
-            "function_calling_type",
-            "stream_function_calling",
-            "vision_support",
-        }
-        if credentials and custom_fields.intersection(credentials):
+        if credentials and CUSTOM_FIELDS.intersection(credentials):
             return self.get_customizable_model_schema_from_credentials(model, credentials)
         return super().get_model_schema(model, credentials)
+
+    def _model_credentials(self, model: str, credentials: dict) -> dict:
+        configured = self._credentials(credentials)
+        if not CUSTOM_FIELDS.intersection(credentials):
+            schema = self.get_model_schema(model)
+            if schema and ModelFeature.VISION in (schema.features or []):
+                configured["vision_support"] = "support"
+        return configured
 
     @staticmethod
     def available_model_ids(credentials: dict) -> set[str]:
@@ -131,7 +140,7 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         stream=True,
         user=None,
     ):
-        credentials = self._credentials(credentials)
+        credentials = self._model_credentials(model, credentials)
         params = {
             k: v
             for k, v in model_parameters.items()
