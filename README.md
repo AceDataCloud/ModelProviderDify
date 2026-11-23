@@ -1,8 +1,8 @@
 # Ace Data Cloud model provider for Dify
 
-Install **Ace Data Cloud**, save one provider API key, and select any published chat model in an LLM node an embedding model in Knowledge settings, or speech/transcription models in the corresponding audio settings. The complete typed catalog is included in the plugin: GPT, Claude, Gemini, Grok, DeepSeek, GLM, Kimi and other published chat models. It is not limited to GPT-4.1 mini. Existing custom models and workflow model IDs remain supported; upgrading does not change your workspace defaults.
+Install **Ace Data Cloud**, save one provider API key, and select any published chat model in an LLM node, an embedding model in Knowledge settings, or speech/transcription models in the corresponding audio settings. The complete typed catalog is included in the plugin: GPT, Claude, Gemini, Grok, DeepSeek, GLM, Kimi and other published chat models. It is not limited to GPT-4.1 mini. Existing custom models and workflow model IDs remain supported; upgrading does not change your workspace defaults.
 
-**Version 0.0.6 source update:** the expanded catalog and embedding/audio interfaces are in this version. Check the version installed in your workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); a source PR or package test does not mean the official release is published. The previously verified Marketplace 0.0.4 contains only the GPT-4.1 mini preset.
+**Version 0.0.6 source update:** the expanded catalog and embedding/audio interfaces are in this version. Check the version installed in your workspace and the [Marketplace entry](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud); a source PR or package test does not mean the official release is published. This source version packages 103 chat, 2 embedding, 2 speech and 2 transcription models (109 total) from the current published API contracts. The previously verified Marketplace 0.0.4 contains only the GPT-4.1 mini preset. Source/local packages are not evidence of official Marketplace acceptance.
 
 [Simplified Chinese](https://github.com/AceDataCloud/ModelProviderDify/blob/main/readme/README_zh_Hans.md) · [Install from Marketplace](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud) · [Source](https://github.com/AceDataCloud/ModelProviderDify)
 
@@ -15,7 +15,7 @@ Install **Ace Data Cloud**, save one provider API key, and select any published 
 
 ![Applications: copy a key or manage keys, historical October 9 2026 illustration](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
 
-A general application key can access services your account is entitled to use; a service-specific key has narrower access. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions` `/v1/embeddings`, `/v1/audio/speech` or `/v1/audio/transcriptions`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
+A general application key can access services your account is entitled to use; a service-specific key has narrower access. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions`, `/v1/messages`, `/v1/embeddings`, `/v1/audio/speech` or `/v1/audio/transcriptions`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
 
 ## 2. Choose a model
 

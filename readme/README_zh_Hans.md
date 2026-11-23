@@ -2,7 +2,7 @@
 
 安装 **Ace Data Cloud**，保存一次供应商 API Key，即可在 LLM 节点选择公开聊天模型，在知识库中选择向量模型，或在对应音频设置中选择语音与转写模型。插件包含完整的公开类型目录，覆盖 GPT、Claude、Gemini、Grok、DeepSeek、GLM、Kimi 等已发布聊天模型，范围不限于 GPT-4.1 mini。已有自定义模型、工作流模型 ID 与工作区默认设置会保留。
 
-**0.0.6 源码更新：**完整目录、Embedding、语音与转写入口属于此版本。请核对工作区已安装版本与[官方市场版本](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)；源码 PR 或包验证通过不代表已正式上架。此前验证过的市场 0.0.4 只有 GPT-4.1 mini 一个预置模型。
+**0.0.6 源码更新：**完整目录、Embedding、语音与转写入口属于此版本。请核对工作区已安装版本与[官方市场版本](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)；源码 PR 或包验证通过不代表已正式上架。本源码版本按当前公开 API 合同包含 103 个聊天、2 个向量、2 个语音合成和 2 个转写模型，共 109 个。此前验证过的市场 0.0.4 只有 GPT-4.1 mini 一个预置模型；源码或本地安装包不代表官方市场已批准。
 
 [English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud) · [源码](https://github.com/AceDataCloud/ModelProviderDify)
 

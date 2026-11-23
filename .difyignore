@@ -14,3 +14,7 @@ pyproject.toml
 validation-report/
 docs/
 scripts/
+
+.difyignore
+.DS_Store
+*.log

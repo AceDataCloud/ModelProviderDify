@@ -243,6 +243,20 @@
       }
     },
     {
+      "id": "gpt-5-all",
+      "label": "GPT-5",
+      "type": "llm",
+      "features": [
+        "vision"
+      ],
+      "endpoint": {
+        "protocol": "chat_completions",
+        "path": "/v1/chat/completions",
+        "auth": "bearer",
+        "api_id": "c9969b66-effb-4753-b504-a82c4d16f83f"
+      }
+    },
+    {
       "id": "gpt-5.1-all",
       "label": "GPT-5.1",
       "type": "llm",
