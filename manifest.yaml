@@ -1,4 +1,4 @@
-version: 0.0.5
+version: 0.0.6
 type: plugin
 author: acedatacloud
 name: acedatacloud
@@ -6,9 +6,8 @@ label:
   en_US: Ace Data Cloud
   zh_Hans: Ace Data Cloud
 description:
-  en_US: Use Ace Data Cloud chat models in Dify with streaming and optional tool calling
-    and image input.
-  zh_Hans: 在 Dify 中使用 Ace Data Cloud 聊天模型，支持流式输出及按模型配置的工具调用和图片输入。
+  en_US: Published Ace Data Cloud chat, embedding, speech synthesis and transcription models.
+  zh_Hans: 使用 Ace Data Cloud 完整公开聊天、向量、语音合成与转写模型。
 icon: icon.png
 icon_dark: icon.png
 tags:
@@ -19,6 +18,9 @@ resource:
     model:
       enabled: true
       llm: true
+      text_embedding: true
+      tts: true
+      speech2text: true
 plugins:
   models:
   - provider/acedatacloud.yaml

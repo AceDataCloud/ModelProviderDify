@@ -1,8 +1,11 @@
 """Ace Data Cloud's fixed Chat Completions endpoint using Dify's message adapters."""
 
+import json
 from collections.abc import Generator
+from pathlib import Path
 
 import requests
+from dify_plugin.entities.model import ModelFeature
 from dify_plugin.errors.model import (
     CredentialsValidateFailedError,
     InvokeAuthorizationError,
@@ -14,7 +17,21 @@ from dify_plugin.errors.model import (
 )
 from dify_plugin.interfaces.model.openai_compatible import llm as compatible
 
+from models.llm.messages import MessagesResponse, request_payload
+
 API_BASE = "https://api.acedata.cloud/v1"
+MODEL_ENDPOINTS = {
+    item["id"]: item["endpoint"]
+    for item in json.loads(Path(__file__).parents[1].joinpath("catalog.json").read_text())["models"]
+    if item["type"] == "llm"
+}
+CUSTOM_FIELDS = {
+    "context_size",
+    "max_tokens_to_sample",
+    "function_calling_type",
+    "stream_function_calling",
+    "vision_support",
+}
 
 
 class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
@@ -80,16 +97,17 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         return schema
 
     def get_model_schema(self, model: str, credentials: dict | None = None):
-        custom_fields = {
-            "context_size",
-            "max_tokens_to_sample",
-            "function_calling_type",
-            "stream_function_calling",
-            "vision_support",
-        }
-        if credentials and custom_fields.intersection(credentials):
+        if credentials and CUSTOM_FIELDS.intersection(credentials):
             return self.get_customizable_model_schema_from_credentials(model, credentials)
         return super().get_model_schema(model, credentials)
+
+    def _model_credentials(self, model: str, credentials: dict) -> dict:
+        configured = self._credentials(credentials)
+        if not CUSTOM_FIELDS.intersection(credentials):
+            schema = self.get_model_schema(model)
+            if schema and ModelFeature.VISION in (schema.features or []):
+                configured["vision_support"] = "support"
+        return configured
 
     @staticmethod
     def available_model_ids(credentials: dict) -> set[str]:
@@ -131,7 +149,7 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         stream=True,
         user=None,
     ):
-        credentials = self._credentials(credentials)
+        credentials = self._model_credentials(model, credentials)
         params = {
             k: v
             for k, v in model_parameters.items()
@@ -154,10 +172,17 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
             payload["stop"] = stop
         if stream:
             payload["stream_options"] = {"include_usage": True}
+        endpoint = MODEL_ENDPOINTS.get(
+            model, {"protocol": "chat_completions", "path": "/v1/chat/completions"}
+        )
+        headers = {"Authorization": f"Bearer {credentials['api_key']}"}
+        if endpoint["protocol"] == "messages":
+            payload = request_payload(payload)
+            headers["anthropic-version"] = "2023-06-01"
         try:
             response = requests.post(
-                f"{API_BASE}/chat/completions",
-                headers={"Authorization": f"Bearer {credentials['api_key']}"},
+                "https://api.acedata.cloud" + endpoint["path"],
+                headers=headers,
                 json=payload,
                 stream=stream,
                 timeout=(10, 120),
@@ -168,6 +193,8 @@ class AceDataCloudLLM(compatible.OAICompatLargeLanguageModel):
         try:
             self._check_response(response)
             response.encoding = "utf-8"
+            if endpoint["protocol"] == "messages":
+                response = MessagesResponse(response)
             if stream:
                 return self._stream(model, credentials, response, prompt_messages)
             return self._handle_generate_response(model, credentials, response, prompt_messages)

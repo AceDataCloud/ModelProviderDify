@@ -1,78 +1,44 @@
-# Ace Data Cloud 模型供应商：手把手跑通第一个 Dify 工作流
+# Ace Data Cloud Dify 模型供应商
 
-安装 **Ace Data Cloud 模型供应商**，保存 API Key，再选择 **GPT-4.1 mini**。预设已提供接口地址和保守参数，不用手填 Base URL、模型 ID 或能力开关。先完成下方不运行模型的接入步骤；金额汇总工作流是可选的历史示例。
+安装 **Ace Data Cloud**，保存一次供应商 API Key，即可在 LLM 节点选择公开聊天模型，在知识库中选择向量模型，或在对应音频设置中选择语音与转写模型。插件包含完整的公开类型目录，覆盖 GPT、Claude、Gemini、Grok、DeepSeek、GLM、Kimi 等已发布聊天模型，范围不限于 GPT-4.1 mini。已有自定义模型、工作流模型 ID 与工作区默认设置会保留。
 
-**2026年10月20日真实接入验收：**Dify CE1.17.1正常签名安装 Marketplace **0.0.4** 后，原生凭据保存与实际模型选择通过，没有运行模型。下方公开三张原图和[脱敏验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)。Applications操作示意图为北京时间10月9日旧图（UTC时间为10月8日），工作流/结果图为10月9日历史实拍。
+**0.0.6 源码更新：**完整目录、Embedding、语音与转写入口属于此版本。请核对工作区已安装版本与[官方市场版本](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)；源码 PR 或包验证通过不代表已正式上架。本源码版本按当前公开 API 合同包含 103 个聊天、2 个向量、2 个语音合成和 2 个转写模型，共 109 个。此前验证过的市场 0.0.4 只有 GPT-4.1 mini 一个预置模型；源码或本地安装包不代表官方市场已批准。
 
-[English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装入口](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud)
+[English](https://github.com/AceDataCloud/ModelProviderDify/blob/main/README.md) · [官方市场安装](https://marketplace.dify.ai/plugin/acedatacloud/acedatacloud) · [源码](https://github.com/AceDataCloud/ModelProviderDify)
 
-## 1. 安装模型插件
+## 1. 安装并配置供应商
 
-打开上方市场入口，确认 **Ace Data Cloud**、发布者 **Ace Data Cloud（acedatacloud）**，点 **Install** 并选择工作区。回到 Dify 的 **Integrations（集成）→ Model Provider（模型供应商）**，应能看到 **Ace Data Cloud**。这是模型插件，不在 Tools 工具列表中。
+1. 在市场确认 **Ace Data Cloud**、作者 **acedatacloud**，点击 **Install** 并选择工作区。打开 **Integrations → Model Provider → Ace Data Cloud**。这是模型供应商，不在 Tools 列表里。
+2. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)。首次没有通用应用时，先点击 **初始化通用应用**。
+3. 复制已有获授权应用的 API Key，或在 **管理密钥 → 创建** 中建立本工作区专用 Key，并设置有效期、API 与用量限制。不要使用平台管理 Token。
+4. 在供应商 **Configure** 窗口的保密字段粘贴原始 Token，不加 `Bearer` 或引号，点一次 **Save**。保存只读取 `/v1/models`，不会生成聊天内容或向量。
 
-## 2. 在 Applications 创建独立的 Dify 用途 Key
+![Applications 复制密钥或管理密钥，2026年10月9日历史操作图](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
 
-首次使用请先注册并登录；如果应用页还没有通用应用，点击 **初始化通用应用（Initialize General Application）**，再按下面步骤管理密钥。
+通用应用 Key 受账号服务权限限制，专用 Key 的范围更窄。设置 Allowed APIs 时，允许 `/v1/models`，以及要使用的 `/v1/chat/completions` `/v1/embeddings`、`/v1/audio/speech` 或 `/v1/audio/transcriptions`。运行前确认权限和余额；保存超时应先检查已有凭据。
 
-1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，找到 **通用应用**。
-2. 建议为这个 Dify 工作区创建独立 Key：点 **②管理密钥 → 创建**，名称可填 `Dify workspace`。如果已有获授权的 consumer Key，可用图中 **①** 复制所选 Key。
+## 2. 选择模型
 
-![复制Key与管理密钥入口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
+- **聊天：**在 LLM 节点或 **Default Models → System Reasoning Model** 中选 Ace Data Cloud，搜索需要的模型 ID，例如 `gpt-6.2-astra`、`gpt-6.2-sol`、Claude 或 Gemini。只选择模型而不运行工作流，不会调用模型。
+- **向量：**在知识库或默认 Embedding 选择器中选 Ace Data Cloud 向量模型。保存凭据只读；文档索引或实际检索会产生 Embedding API 用量。
+- **语音：**文字转语音可选 `tts-1`、`tts-1-hd` 及公开音色；语音转写可选 `whisper-1`、`gpt-transcribe`。实际合成或转写上传文件会产生 API 用量，保存凭据不运行这两种操作。
+- **图片输入：**公开目录声明支持 vision 的聊天模型会开启 Dify 图片输入。`gpt-4o-image` 属于公开 Chat Completions 模型，因此保留在聊天列表中。仅图片、音频和视频生成接口走对应的 Dify 工具入口。
 
-3. 设置合适的过期、用量和 API 限制，点 **创建**，再回密钥列表或应用页复制 Token。独立 Key 便于只撤销这一个集成，而不用轮换其他集成的 Key。
+插件依据每个模型的公开端点绑定选择 Chat Completions 或 Messages 协议，不按名字或厂商猜测。仅支持 Messages 的模型，例如 `claude-sonnet-5-5`，使用 `/v1/messages` 和 Ace Bearer 凭据。公开目录未提供上下文窗口与工具调用元数据；插件不猜测这些字段，也不把厂商参考价格当作账号价格。最大输出默认 1,024 Token，是可调整的请求设置，不是模型能力上限；请遵守所选模型的当前文档限制。
 
-![创建独立的Dify Key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
+**Add Model** 仍支持显式自定义模型。填写准确的模型 ID 与类型。已有自定义上下文、输出长度和能力设置优先，包括主动关闭图片输入的配置。仅对支持工具调用的模型开启该功能。插件不会自动替换模型，也不会自动重试付费请求。
 
-Applications旧图展示已有密钥管理流程，图中的创建窗口当时已取消。这是操作指南，不是新建 Key 的验收证明。10月20日接入验收使用的是既有获授权 consumer API credential，没有新建专用 Applications Token。
+## 3. 目录如何更新
 
-通用应用 Key 可用于账号有权使用的多个服务；专用 Key 仅限对应服务。首次运行前确认 `gpt-4.1-mini` 权限和余额。启用 Allowed APIs 时，要允许统一模型列表 `/v1/models` 及聊天接口 `/v1/chat/completions`。Dify 只贴 Token 字符串，不加 `Bearer `、引号，也不要用平台管理 Token。
+Dify 原生模型选择器读取已安装插件里的声明。新的官方市场版本发布后，需要升级插件才能看到新目录。市场可安装不表示 Dify Cloud 或新部署的工作区默认安装 Ace。
 
-## 3. 在 Dify 添加模型
+源码仓库每日执行 **Sync published model catalog**：读取[公开聊天目录](https://platform.acedata.cloud/api/v1/models/)与[模型类型目录](https://platform.acedata.cloud/api/v1/models/catalog/)，生成全部聊天、向量、语音与转写模型声明，检查 SDK 注册和目录覆盖；发现变化后由 Dev bot 创建带版本升级的 PR。源码审核与官方市场审核仍须正常完成。待新版审核期间，也可通过自定义表单添加已支持的新模型。
 
-### 0.0.4：保存供应商 Key，再选择预设模型
+维护者可用 `python scripts/sync_model_catalog.py --refresh` 刷新完整快照，或用 `python scripts/sync_model_catalog.py --check` 离线检查生成结果。不要手改生成的模型 YAML。
 
-1. 打开 **Integrations → Model Provider → Ace Data Cloud → Configure**。在凭据窗口中按提示填写易识别的名称，把自己的 **Ace Data Cloud API key** 粘贴到保密 API-key 字段。只粘贴 Token，不用管理凭据，也不加 `Bearer ` 前缀。
-2. 点一次 **Save**。保存通过只读 `/v1/models` 检查访问权限，不生成模型内容。如果保存超时，先检查现有命名凭据，再决定是否重试。
+## 历史工作流示例
 
-![2026年10月20日Ace Data Cloud0.0.4原生凭据保存后的真实已配置状态](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/01-native-provider-configured.png)
-
-这张原图展示保存后的已配置结果，不展示输入 Key 的动作，也没有 Key 值。
-
-3. 如需先检查原生选择器而不运行工作流，打开 **Default Models**，展开 **System Reasoning Model**，选择 **Ace Data Cloud → GPT-4.1 mini**。下面实拍的是原生设置选择器，不是 LLM 节点运行截图。
-
-![原生模型选择器：保留半透明popover过渡的真实原图](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/02-native-model-picker.png)
-
-popover处于真实半透明过渡帧，不能当作稳定截图；[验收摘要](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)另行记录了实际 provider/model 元数据与真实点击选择结果。
-
-![GPT-4.1 mini在未保存设置草稿中选中：真实过渡帧](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/44238d0b83a89583ba95beded66a620a39632e0f/_assets/tutorial/native-20261020/03-native-model-draft-selected.png)
-
-后一张选择器原图也保留过渡半透明。点 **Cancel** 可退出这次检查而不保存工作区默认模型；本次验收停在未保存、未运行的选择草稿。之后在自己的工作流 LLM 节点中选择同一 **Ace Data Cloud → GPT-4.1 mini** 预设，再决定是否运行。
-
-预设采用128,000 Token上下文和1,024 Token最大输出，默认关闭图片与工具调用；仍需对应模型权限和余额。若账号无法使用该模型，可通过自定义方式添加目录中确实可用的模型，插件不会自动换模型。
-
-这是 Dify 命名模型供应商使用的标准插件机制。市场安装不表示 Dify Cloud 或新建自部署工作区会默认安装 Ace；本次更新不改生产默认配置。
-
-### 可选自定义模型及较旧的已安装版本
-
-已安装版本早于 0.0.4，或需要其他自定义模型时，使用下面已有路径；升级后仍然支持。
-
-进入 **Integrations → Model Provider → Ace Data Cloud → Add Model**：
-
-| 字段 | 首跑填写 |
-|---|---|
-| Model ID（模型 ID） | `gpt-4.1-mini` |
-| Model Type（模型类型） | LLM |
-| Authorization Name（授权名称） | `Ace Data Cloud` |
-| API key | 自己复制的 API Token |
-| Context token limit（上下文限制） | `128000` |
-| Maximum output tokens（最大输出） | `1024` |
-| Tool calling（工具调用） | Disabled（禁用） |
-| Streaming tool calls（流式工具调用） | Disabled |
-| Image input（图片输入） | Disabled |
-
-点 **Add（添加）**。插件已经配置接口地址和 Chat Completions 模式，不用再填 Base URL。保存只查询模型列表，不生成付费内容。
-
-![历史自定义模型窗口：Dify CE 1.17.1，2026年10月9日](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/02-authorize.png)
+下方金额汇总示例使用 GPT-4.1 mini，因为2026年10月9日的演示选择了它；这是一个示例，不代表模型范围。旧图不展示或证明新版完整目录。实际运行按账号当前价格计费。
 
 ## 4. 连接 Start → LLM → Output
 
@@ -116,32 +82,19 @@ Output 新增 `summary_json`，变量选择 **LLM → text**，类型为 String�
 
 [下载可导入工作流](https://github.com/AceDataCloud/ModelProviderDify/raw/refs/heads/main/docs/quickstart.dify.yml)。在 Studio 导入后配置自己的 Key，文件不含凭据。
 
-## 10月20日实际验证了什么
+## 验证范围与费用
 
-| 验收项 | 记录结果 |
+[2026年10月20日历史验收记录](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)证明了正常签名安装市场 0.0.4、一次凭据保存和在 Dify CE 1.17.1 未保存且未运行的草稿中选择单个预置模型。它不是新版0.0.6全目录界面、Dify Cloud或新付费推理的验证。
+
+插件免费，聊天、向量与音频请求按 Ace Data Cloud 账号当前价格计费。插件没有提供固定价格，Dify 可能显示零估算；**零估算不等于 API 免费**，实际以账号用量账单为准。按请求计费的图片聊天也不能冒充 Token 单价。
+
+| 问题 | 检查 |
 |---|---|
-| 安装 | Provider0.0.4普通签名 Marketplace安装；exact package identifier与verified状态读回。 |
-| 原生凭据 | 唯一一次Save返回201；独立只读DB检查命名记录为1且active指向匹配，没有选择凭据值。 |
-| 模型选择 | 原生元数据包含Ace / `gpt-4.1-mini`，真实点击选择器并在未保存设置草稿中显示选中。 |
-| 边界 | 没有模型/生成请求、响应mock、复用用户profile/cookie或提交工作区默认模型；临时fixture已正常清理。 |
+| 只看到 GPT-4.1 mini | 核对已安装版本；0.0.4 只有一个预置，待新版正式发布后升级。 |
+| 无法保存模型 | 精确模型 ID 和类型、Key 有效期、服务权限与 Allowed APIs。 |
+| 401/403 | Key 权限、内容策略、余额；不要发送 Key 给客服。 |
+| 429 | 等待并降低并发；插件不自动重试。 |
+| 超时或服务错误 | 重发付费请求前先检查原请求记录。 |
+| Embedding 输入过长 | 显式缩短或切分文档；插件不会静默截断输入。 |
 
-[公开脱敏记录与原图哈希](https://github.com/AceDataCloud/ModelProviderDify/blob/88bf2f25e5c50a0194aadb9e12ed21aea1d3ea89/_assets/tutorial/native-20261020/acceptance.json)证明正常安装和原生接入，不代表默认预装、Dify Cloud、收费推理、唯一账单或渠道归因通过。本次没有新建专用Applications Token。02/03原图如实保留过渡半透明，没有为美观再开环境或重跑已成功的Save。
-
-本源码仓指南可能新于已发布的不可变0.0.4市场包内README。本次只更新文档，不重包或替换已有0.0.4。
-
-## 常见问题与费用
-
-| 现象 | 检查方法 |
-|---|---|
-| 保存模型失败 | 核对精确模型 ID、生成 API Token、过期时间、服务权限、Allowed APIs。 |
-| LLM 下拉框没有模型 | 0.0.4 保存供应商 Key 后检查预设模型权限；0.0.3 先添加自定义模型。 |
-| 401/403 | 检查 Key、权限、内容限制及余额；反馈时不要发送 Key。 |
-| 429 | 稍后再试并降低并发。 |
-| 超时/5xx | 重提前先看请求历史；插件不自动重试付费调用。 |
-| 出现 Markdown 或总额错误 | 保留 JSON 提示并核对结果；用于业务计算前需要独立校验模型答案。 |
-
-插件免费，API 按当前服务价格计费。Dify 因未配置固定价格可能显示估价为零，真实扣费以 Ace Data Cloud 用量页为准。请求发往 `api.acedata.cloud`，详见[隐私说明](https://github.com/AceDataCloud/ModelProviderDify/blob/main/PRIVACY.md)。
-
-本插件支持 Chat Completions；Responses-only 等其他协议、图片生成、向量及音视频接口不是此处的聊天模型。只有模型确实支持时，再开启图片或工具调用。
-
-[源码](https://github.com/AceDataCloud/ModelProviderDify) · [问题反馈](https://github.com/AceDataCloud/ModelProviderDify/issues) · dev@acedata.cloud
+请求固定发往 `api.acedata.cloud`。参见[隐私政策](https://github.com/AceDataCloud/ModelProviderDify/blob/main/PRIVACY.md)。[问题反馈](https://github.com/AceDataCloud/ModelProviderDify/issues) · dev@acedata.cloud

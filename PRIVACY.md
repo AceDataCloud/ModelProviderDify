@@ -1,6 +1,6 @@
 # Privacy policy — Ace Data Cloud Dify model provider
 
-Effective date: 2026-10-06. Maintainer: Ace Data Cloud (dev@acedata.cloud).
+Effective date: 2026-11-23. Maintainer: Ace Data Cloud (dev@acedata.cloud).
 
 ## Data sent and purpose
 
@@ -8,10 +8,16 @@ The plugin transmits your API key to `api.acedata.cloud` in an HTTPS Authorizati
 header. Credential validation reads the available model IDs. Model invocations
 send your selected model, conversation messages, system instructions, enabled
 image inputs, tool definitions, tool results and generation parameters to the same
-API to produce the requested answer. Prompts and tool results may contain personal
+API through the model's published Chat Completions or Messages protocol to produce the requested answer. Prompts and tool results may contain personal
 data if you include it. The service also receives ordinary request metadata,
 including the calling server's IP address and token usage needed to operate and
 bill the API.
+
+Speech synthesis sends your selected model, voice and text; transcription sends the selected model and uploaded audio bytes. Embedding requests send the selected embedding model and your input text to the
+same fixed API. Saving chat, embedding or audio credentials reads only the model list;
+it does not make a paid generation, embedding or audio request. The scheduled catalog
+update runs in the source repository and reads public, unauthenticated metadata
+from `platform.acedata.cloud`; it does not receive a Dify credential or user input.
 
 ## Storage, logging and recipients
 

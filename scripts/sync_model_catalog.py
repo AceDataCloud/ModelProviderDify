@@ -1,0 +1,208 @@
+"""Generate Dify's packaged model declarations from Ace's public typed catalog."""
+
+import argparse
+import json
+from pathlib import Path
+
+import requests
+import yaml
+
+CHAT_URL = "https://platform.acedata.cloud/api/v1/models/"
+CATALOG_URL = "https://platform.acedata.cloud/api/v1/models/catalog/"
+AUDIO_SOURCES = {
+    "tts": "https://platform.acedata.cloud/api/v1/apis/078d0146-f820-4617-b98e-47ba15a93d60/",
+    "speech2text": "https://platform.acedata.cloud/api/v1/apis/60f037ff-7d2f-4ea4-ae42-feba542c8cb2/",
+}
+ROOT = Path(__file__).resolve().parents[1]
+SNAPSHOT = ROOT / "models/catalog.json"
+
+
+def project(chat: dict, catalog: dict, audio: dict | None = None) -> dict:
+    """Do not infer model type, context windows, prices or tools from names."""
+    models = []
+    for item in chat["data"]:
+        if item["type"] != "chat":
+            continue
+        endpoints = item.get("endpoints", [])
+        endpoint = next(
+            (
+                entry
+                for protocol in ("chat_completions", "messages")
+                for entry in endpoints
+                if entry.get("protocol") == protocol
+            ),
+            None,
+        )
+        if endpoint is None:
+            raise ValueError(
+                f"No supported published chat protocol for {item['id']}; review the adapter before publishing"
+            )
+        expected_path = (
+            "/v1/messages" if endpoint["protocol"] == "messages" else "/v1/chat/completions"
+        )
+        if endpoint.get("path") != expected_path or endpoint.get("auth") != "bearer":
+            raise ValueError(f"Unexpected endpoint contract for {item['id']}")
+        models.append(
+            {
+                "id": item["id"],
+                "label": item["label"],
+                "type": "llm",
+                "features": ["vision"] if "vision" in item.get("capabilities", []) else [],
+                "endpoint": {
+                    "protocol": endpoint["protocol"],
+                    "path": endpoint["path"],
+                    "auth": "bearer",
+                    "api_id": endpoint["api_id"],
+                },
+            }
+        )
+    for item in catalog["items"]:
+        if item["modality"] == "embedding":
+            models.append(
+                {
+                    "id": item["id"],
+                    "label": item["name"],
+                    "type": "text-embedding",
+                    "features": [],
+                }
+            )
+    for model_type, api in (audio or {}).items():
+        content = api["definition"]["paths"][api["path"]]["post"]["requestBody"]["content"]
+        mime = "application/json" if model_type == "tts" else "multipart/form-data"
+        properties = content[mime]["schema"]["properties"]
+        for model in properties["model"]["enum"]:
+            model_properties = {}
+            if model_type == "tts":
+                if "mp3" not in properties["response_format"]["enum"]:
+                    raise ValueError("The published TTS API no longer supports MP3")
+                model_properties = {
+                    "voices": [
+                        {"name": voice, "mode": voice} for voice in properties["voice"]["enum"]
+                    ],
+                    "default_voice": properties["voice"]["default"],
+                    "audio_type": "mp3",
+                }
+            models.append(
+                {
+                    "id": model,
+                    "label": model,
+                    "type": model_type,
+                    "features": [],
+                    "properties": model_properties,
+                }
+            )
+    for model_type in ("llm", "text-embedding", *(audio or {})):
+        ids = [m["id"] for m in models if m["type"] == model_type]
+        if not ids or len(ids) != len(set(ids)):
+            raise ValueError(f"Empty or duplicate {model_type} catalog")
+    if any(not m["id"] or "/" in m["id"] or "\\" in m["id"] for m in models):
+        raise ValueError("Invalid model ID")
+    return {
+        "sources": [CHAT_URL, CATALOG_URL, *[AUDIO_SOURCES[key] for key in (audio or {})]],
+        "models": models,
+    }
+
+
+def declarations(snapshot: dict) -> dict[str, str]:
+    files = {}
+    for model_type, directory in (
+        ("llm", "llm"),
+        ("text-embedding", "text_embedding"),
+        ("tts", "tts"),
+        ("speech2text", "speech2text"),
+    ):
+        models = [item for item in snapshot["models"] if item["type"] == model_type]
+        files[f"models/{directory}/_position.yaml"] = yaml.safe_dump(
+            [item["id"] for item in models], sort_keys=False
+        )
+        for item in models:
+            schema = {
+                "model": item["id"],
+                "label": {"en_US": item["label"], "zh_Hans": item["label"]},
+                "model_type": model_type,
+                "features": item["features"],
+                # The public catalog does not state model context windows. Dify's
+                # schema permits omission; do not use Codex truncation budgets.
+                "model_properties": {"mode": "chat"}
+                if model_type == "llm"
+                else item.get("properties", {}),
+                "parameter_rules": [],
+            }
+            if model_type == "llm":
+                parameters = (
+                    ("temperature", "top_p")
+                    if item["endpoint"]["protocol"] == "messages"
+                    else ("temperature", "top_p", "presence_penalty", "frequency_penalty")
+                )
+                schema["parameter_rules"] = [
+                    {"name": name, "use_template": name} for name in parameters
+                ] + [
+                    {
+                        "name": "max_tokens",
+                        "label": {"en_US": "Maximum output tokens", "zh_Hans": "最大输出 Token 数"},
+                        "type": "int",
+                        "default": 1024,
+                        "min": 1,
+                    }
+                ]
+            files[f"models/{directory}/{item['id']}.yaml"] = (
+                "# Generated by scripts/sync_model_catalog.py; do not edit.\n"
+                + yaml.safe_dump(schema, allow_unicode=True, sort_keys=False)
+            )
+    return files
+
+
+def sync(snapshot: dict, root: Path = ROOT, check: bool = False) -> list[str]:
+    files = declarations(snapshot)
+    files["models/catalog.json"] = json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n"
+    existing = {
+        str(path.relative_to(root))
+        for directory in ("llm", "text_embedding", "tts", "speech2text")
+        for path in (root / "models" / directory).glob("*.yaml")
+    }
+    changed = []
+    for relative in sorted(existing | set(files)):
+        path = root / relative
+        expected = files.get(relative)
+        actual = path.read_text() if path.exists() else None
+        if actual == expected:
+            continue
+        changed.append(relative)
+        if not check:
+            if expected is None:
+                path.unlink()
+            else:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(expected)
+    return changed
+
+
+def fetch(url: str) -> dict:
+    # Public metadata only. Never give the sync job an inference/API key.
+    response = requests.get(url, timeout=(10, 30), allow_redirects=False)
+    response.raise_for_status()
+    return response.json()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--refresh", action="store_true", help="Read current public catalog")
+    parser.add_argument("--check", action="store_true", help="Fail on generated-file drift")
+    args = parser.parse_args()
+    snapshot = (
+        project(
+            fetch(CHAT_URL),
+            fetch(CATALOG_URL),
+            {key: fetch(url) for key, url in AUDIO_SOURCES.items()},
+        )
+        if args.refresh
+        else json.loads(SNAPSHOT.read_text())
+    )
+    changed = sync(snapshot, check=args.check)
+    print(f"{len(snapshot['models'])} models; {len(changed)} changed files")
+    if args.check and changed:
+        raise SystemExit("Model declarations need regeneration: " + ", ".join(changed))
+
+
+if __name__ == "__main__":
+    main()

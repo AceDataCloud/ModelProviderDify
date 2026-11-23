@@ -145,12 +145,10 @@ def test_registered_preset_is_selectable_with_only_provider_key():
         field.variable for field in schema.provider_credential_schema.credential_form_schemas
     ] == ["api_key"]
     model = registration.get_model_instance("acedatacloud", ModelType.LLM)
-    assert [item.model for item in model.predefined_models()] == ["gpt-4.1-mini"]
+    assert "gpt-4.1-mini" in [item.model for item in model.predefined_models()]
     preset = model.get_model_schema("gpt-4.1-mini", {"api_key": "test-placeholder"})
-    assert {key.value: value for key, value in preset.model_properties.items()}[
-        "context_size"
-    ] == 128000
-    assert not preset.features and preset.pricing is None
+    assert "context_size" not in {key.value for key in preset.model_properties}
+    assert ModelFeature.VISION in preset.features and preset.pricing is None
     assert model.get_model_schema("custom-chat-model", {"api_key": "test-placeholder"}) is not None
 
 
