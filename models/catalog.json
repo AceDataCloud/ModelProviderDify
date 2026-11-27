@@ -641,6 +641,20 @@
       }
     },
     {
+      "id": "gemini-4-neon",
+      "label": "Gemini 4 Neon",
+      "type": "llm",
+      "features": [
+        "vision"
+      ],
+      "endpoint": {
+        "protocol": "chat_completions",
+        "path": "/v1/chat/completions",
+        "auth": "bearer",
+        "api_id": "94b49b55-2ea8-4d46-a93c-eb308e1a52d5"
+      }
+    },
+    {
       "id": "gemini-4-hydrogen",
       "label": "Gemini 4 Hydrogen",
       "type": "llm",
