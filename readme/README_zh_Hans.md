@@ -9,7 +9,7 @@
 ## 1. 安装并配置供应商
 
 1. 在市场确认 **Ace Data Cloud**、作者 **acedatacloud**，点击 **Install** 并选择工作区。打开 **Integrations → Model Provider → Ace Data Cloud**。这是模型供应商，不在 Tools 列表里。
-2. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)。首次没有通用应用时，先点击 **初始化通用应用**。
+2. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)。打开**通用应用**。
 3. 复制已有获授权应用的 API Key，或在 **管理密钥 → 创建** 中建立本工作区专用 Key，并设置有效期、API 与用量限制。不要使用平台管理 Token。
 4. 在供应商 **Configure** 窗口的保密字段粘贴原始 Token，不加 `Bearer` 或引号，点一次 **Save**。保存只读取 `/v1/models`，不会生成聊天内容或向量。
 

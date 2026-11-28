@@ -9,7 +9,7 @@ Install **Ace Data Cloud**, save one provider API key, and select any published 
 ## 1. Install and authorize the provider
 
 1. Open the Marketplace entry, confirm **Ace Data Cloud** by **acedatacloud**, click **Install**, and select your workspace. Open **Integrations → Model Provider → Ace Data Cloud**. This is a model provider; it does not appear in Tools.
-2. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key). If no General application exists, choose **Initialize General Application**.
+2. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key). Open **General Application**.
 3. Copy an authorized application API key, or choose **Manage Keys → Create** to make a key for this Dify workspace. Set its expiry and API/usage restrictions. Do not use a platform management token.
 4. In the provider's **Configure** dialog, paste the raw API token into the secret API-key field, without `Bearer` or quotes, and click **Save**. Saving reads `/v1/models` only; it never generates text or embeddings.
 

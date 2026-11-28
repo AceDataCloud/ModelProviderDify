@@ -14,8 +14,6 @@ Open the Marketplace link above, check **Ace Data Cloud**, published by **Ace Da
 
 ## 2. Create a dedicated Dify key in Applications
 
-New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
-
 1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General application**.
 2. For a key dedicated to this Dify workspace, choose **2 → Manage Keys → Create**. Give it a recognizable name such as `Dify workspace`. If you already have an authorized consumer key, **1** copies that selected key instead.
 
