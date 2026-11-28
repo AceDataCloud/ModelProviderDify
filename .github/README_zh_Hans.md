@@ -14,8 +14,6 @@
 
 ## 2. 在 Applications 创建独立的 Dify 用途 Key
 
-首次使用请先注册并登录；如果应用页还没有通用应用，点击 **初始化通用应用（Initialize General Application）**，再按下面步骤管理密钥。
-
 1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，找到 **通用应用**。
 2. 建议为这个 Dify 工作区创建独立 Key：点 **②管理密钥 → 创建**，名称可填 `Dify workspace`。如果已有获授权的 consumer Key，可用图中 **①** 复制所选 Key。
 
