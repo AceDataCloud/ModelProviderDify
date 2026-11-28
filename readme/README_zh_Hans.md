@@ -9,13 +9,13 @@
 ## 1. 安装并配置供应商
 
 1. 在市场确认 **Ace Data Cloud**、作者 **acedatacloud**，点击 **Install** 并选择工作区。打开 **Integrations → Model Provider → Ace Data Cloud**。这是模型供应商，不在 Tools 列表里。
-2. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)。首次没有通用应用时，先点击 **初始化通用应用**。
-3. 复制已有获授权应用的 API Key，或在 **管理密钥 → 创建** 中建立本工作区专用 Key，并设置有效期、API 与用量限制。不要使用平台管理 Token。
-4. 在供应商 **Configure** 窗口的保密字段粘贴原始 Token，不加 `Bearer` 或引号，点一次 **Save**。保存只读取 `/v1/models`，不会生成聊天内容或向量。
+2. 登录[应用列表](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，打开**通用应用**。首次使用时若尚未初始化，先点击**初始化通用应用**，然后点击 **API KEY** 旁的复制按钮（图中标注 **1**）。
 
-![Applications 复制密钥或管理密钥，2026年10月9日历史操作图](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
+   ![通用应用中 API KEY 旁标注 1 的复制按钮](https://raw.githubusercontent.com/AceDataCloud/NanoBananaDify/2522b2f57210597af2db866445319334a1677a23/_assets/tutorial/get-api-key-en.png)
 
-通用应用 Key 受账号服务权限限制，专用 Key 的范围更窄。设置 Allowed APIs 时，允许 `/v1/models`，以及要使用的 `/v1/chat/completions` `/v1/embeddings`、`/v1/audio/speech` 或 `/v1/audio/transcriptions`。运行前确认权限和余额；保存超时应先检查已有凭据。
+3. 在供应商 **Configure** 窗口的保密字段粘贴原始 Token，不加 `Bearer` 或引号，点一次 **Save**。保存只读取 `/v1/models`，不会生成聊天内容或向量。
+
+如需为 Dify 工作区单独创建密钥，可在**管理密钥**中设置有效期、接口范围和用量限制。设置 Allowed APIs 时，允许 `/v1/models`，以及要使用的 `/v1/chat/completions` `/v1/embeddings`、`/v1/audio/speech` 或 `/v1/audio/transcriptions`。运行前确认权限和余额；保存超时应先检查已有凭据。
 
 ## 2. 选择模型
 

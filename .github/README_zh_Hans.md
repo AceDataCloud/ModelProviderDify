@@ -12,20 +12,13 @@
 
 打开上方市场入口，确认 **Ace Data Cloud**、发布者 **Ace Data Cloud（acedatacloud）**，点 **Install** 并选择工作区。回到 Dify 的 **Integrations（集成）→ Model Provider（模型供应商）**，应能看到 **Ace Data Cloud**。这是模型插件，不在 Tools 工具列表中。
 
-## 2. 在 Applications 创建独立的 Dify 用途 Key
+## 2. 从通用应用复制 API Key
 
-首次使用请先注册并登录；如果应用页还没有通用应用，点击 **初始化通用应用（Initialize General Application）**，再按下面步骤管理密钥。
+登录[应用列表](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，打开**通用应用**。首次使用时若尚未初始化，先点击**初始化通用应用**，然后点击 **API KEY** 旁的复制按钮（图中标注 **1**）。
 
-1. 登录 [Ace Data Cloud → 我的应用](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key)，找到 **通用应用**。
-2. 建议为这个 Dify 工作区创建独立 Key：点 **②管理密钥 → 创建**，名称可填 `Dify workspace`。如果已有获授权的 consumer Key，可用图中 **①** 复制所选 Key。
+![通用应用中 API KEY 旁标注 1 的复制按钮](https://raw.githubusercontent.com/AceDataCloud/NanoBananaDify/2522b2f57210597af2db866445319334a1677a23/_assets/tutorial/get-api-key-en.png)
 
-![复制Key与管理密钥入口](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
-
-3. 设置合适的过期、用量和 API 限制，点 **创建**，再回密钥列表或应用页复制 Token。独立 Key 便于只撤销这一个集成，而不用轮换其他集成的 Key。
-
-![创建独立的Dify Key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
-
-Applications旧图展示已有密钥管理流程，图中的创建窗口当时已取消。这是操作指南，不是新建 Key 的验收证明。10月20日接入验收使用的是既有获授权 consumer API credential，没有新建专用 Applications Token。
+如需给该工作区单独创建 Key，可在**管理密钥**设置有效期、接口范围和用量限制。
 
 通用应用 Key 可用于账号有权使用的多个服务；专用 Key 仅限对应服务。首次运行前确认 `gpt-4.1-mini` 权限和余额。启用 Allowed APIs 时，要允许统一模型列表 `/v1/models` 及聊天接口 `/v1/chat/completions`。Dify 只贴 Token 字符串，不加 `Bearer `、引号，也不要用平台管理 Token。
 

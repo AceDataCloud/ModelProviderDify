@@ -12,20 +12,13 @@ Install **Ace Data Cloud** as a Dify model provider, save an API key, and select
 
 Open the Marketplace link above, check **Ace Data Cloud**, published by **Ace Data Cloud (`acedatacloud`)**, click **Install**, and choose your workspace. In Dify, open **Integrations → Model Provider**. You should see **Ace Data Cloud**. This is a model provider; do not look for it under Tools.
 
-## 2. Create a dedicated Dify key in Applications
+## 2. Copy your application API key
 
-New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
+Sign in to [Applications](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General Application**. If it is missing, select **Initialize General Application**. Click the copy button marked **1** beside **API KEY**.
 
-1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=github&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General application**.
-2. For a key dedicated to this Dify workspace, choose **2 → Manage Keys → Create**. Give it a recognizable name such as `Dify workspace`. If you already have an authorized consumer key, **1** copies that selected key instead.
+![Copy the General Application API key with the button marked 1](https://raw.githubusercontent.com/AceDataCloud/NanoBananaDify/2522b2f57210597af2db866445319334a1677a23/_assets/tutorial/get-api-key-en.png)
 
-![Copy the selected key or open key management](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
-
-3. Set an appropriate expiration and usage/API restrictions, then click **Create**. Return to the key list or application card and copy the token. A separate key lets you revoke this integration without rotating other integrations.
-
-![Applications guide: create a separate Dify-purpose API key](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/create-api-key-en.png)
-
-The Applications illustrations show the existing key-management flow; the pictured Create dialog was cancelled. They are instructions, not evidence that a new key was created. The October 20 acceptance used a previously authorized consumer API credential.
+To create a separate key for this Dify workspace, open **Manage Keys** to set its API scope, expiration, and usage limit.
 
 A general-application key can access multiple services your account is entitled to use; a service-specific key is limited to its service. Confirm `gpt-4.1-mini` access and balance before the first run. If you restrict Allowed APIs, permit the unified model listing `/v1/models` and Chat Completions `/v1/chat/completions`. Paste only the token string in Dify, without `Bearer ` or quotation marks. Do not use a platform management token.
 

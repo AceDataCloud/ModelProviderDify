@@ -9,13 +9,13 @@ Install **Ace Data Cloud**, save one provider API key, and select any published 
 ## 1. Install and authorize the provider
 
 1. Open the Marketplace entry, confirm **Ace Data Cloud** by **acedatacloud**, click **Install**, and select your workspace. Open **Integrations → Model Provider → Ace Data Cloud**. This is a model provider; it does not appear in Tools.
-2. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key). If no General application exists, choose **Initialize General Application**.
-3. Copy an authorized application API key, or choose **Manage Keys → Create** to make a key for this Dify workspace. Set its expiry and API/usage restrictions. Do not use a platform management token.
-4. In the provider's **Configure** dialog, paste the raw API token into the secret API-key field, without `Bearer` or quotes, and click **Save**. Saving reads `/v1/models` only; it never generates text or embeddings.
+2. Sign in to [Applications](https://platform.acedata.cloud/console/applications?utm_source=dify&utm_medium=referral&utm_campaign=evergreen&utm_content=modelproviderdify_readme_api_key) and open **General Application**. If it is missing, select **Initialize General Application**. Click the copy button marked **1** beside **API KEY**.
 
-![Applications: copy a key or manage keys, historical October 9 2026 illustration](https://raw.githubusercontent.com/AceDataCloud/ModelProviderDify/3f711095cb4dc317a32e3b6bc1e8659d6a112019/_assets/tutorial/get-api-key-en.png)
+   ![Copy the General Application API key with the button marked 1](https://raw.githubusercontent.com/AceDataCloud/NanoBananaDify/2522b2f57210597af2db866445319334a1677a23/_assets/tutorial/get-api-key-en.png)
 
-A general application key can access services your account is entitled to use; a service-specific key has narrower access. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions`, `/v1/messages`, `/v1/embeddings`, `/v1/audio/speech` or `/v1/audio/transcriptions`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
+3. In the provider's **Configure** dialog, paste the raw API token into the secret API-key field, without `Bearer` or quotes, and click **Save**. Saving reads `/v1/models` only; it never generates text or embeddings.
+
+To create a separate key for this Dify workspace, open **Manage Keys** to set its API scope, expiration, and usage limit. For restricted keys, permit `/v1/models` and the selected operation: `/v1/chat/completions`, `/v1/messages`, `/v1/embeddings`, `/v1/audio/speech` or `/v1/audio/transcriptions`. Confirm access and balance before running a workflow. If Save times out, inspect the existing credential before repeating it.
 
 ## 2. Choose a model
 
